@@ -332,9 +332,58 @@ const translations = {
   }
 };
 
-/* Product data for detail page */
-const productData = {
-  cream: { img: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=800&q=80' },
-  oil:   { img: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80' },
-  serum: { img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80' }
+/* Product data for detail page — updated dynamically from Supabase */
+let productData = {
+  cream: { img: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=800&q=80', dbId: null, price: 3500 },
+  oil:   { img: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80', dbId: null, price: 2800 },
+  serum: { img: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&q=80', dbId: null, price: 4200 }
 };
+
+/* Global cache for Supabase products — populated on first fetch */
+let supaProductsCache = null;
+
+/* Map Supabase product to local key (cream/oil/serum) based on name */
+function mapProductToLocalKey(product) {
+  const name = (product.name || '').toLowerCase();
+  if (name.includes('cream') || name.includes('brightening') || name.includes('كريم') || name.includes('crème')) return 'cream';
+  if (name.includes('oil') || name.includes('hair') || name.includes('زيت') || name.includes('huile')) return 'oil';
+  if (name.includes('serum') || name.includes('rose') || name.includes('سيروم') || name.includes('sérum')) return 'serum';
+  return null;
+}
+
+/* Load and cache products from Supabase, update productData */
+async function loadSupabaseProducts() {
+  if (supaProductsCache) return supaProductsCache;
+  if (typeof fetchProducts !== 'function') return null;
+
+  try {
+    const products = await fetchProducts();
+    if (!products || products.length === 0) return null;
+
+    supaProductsCache = products;
+
+    // Update productData with real DB info
+    products.forEach(p => {
+      const key = mapProductToLocalKey(p);
+      if (key) {
+        productData[key] = {
+          ...productData[key],
+          dbId: p.id,
+          price: Number(p.price) || productData[key].price,
+          dbName: p.name,
+          dbDesc: p.description,
+          dbImage: p.image,
+          promotion: p.promotion ? Number(p.promotion) : null
+        };
+        // Use DB image if available
+        if (p.image) productData[key].img = p.image;
+      }
+    });
+
+    return products;
+  } catch(e) {
+    console.warn('Could not load Supabase products, using fallback:', e);
+    return null;
+  }
+}
+

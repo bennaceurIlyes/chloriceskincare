@@ -5,7 +5,11 @@
 
 const Cart = {
   items: [],
-  prices: { cream: 3500, oil: 2800, serum: 4200 },
+
+  /* Prices come from productData (updated by Supabase) with fallback */
+  getPrice(id) {
+    return productData[id]?.price || { cream: 3500, oil: 2800, serum: 4200 }[id] || 0;
+  },
 
   init() {
     this.items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
@@ -84,7 +88,7 @@ const Cart = {
   },
 
   getTotal() {
-    return this.items.reduce((s, i) => s + (this.prices[i.id] || 0) * i.qty, 0);
+    return this.items.reduce((s, i) => s + this.getPrice(i.id) * i.qty, 0);
   },
 
   updateBadge() {
@@ -121,7 +125,7 @@ const Cart = {
     if (footer) footer.style.display = 'block';
     list.innerHTML = this.items.map(item => {
       const name = I18n.t(`product.${item.id}.name`);
-      const price = this.prices[item.id] || 0;
+      const price = this.getPrice(item.id);
       const img = productData[item.id]?.img || '';
       return `<div class="flex gap-4 mb-5 pb-5" style="border-bottom:.5px solid rgba(26,36,33,.08)">
         <img src="${img}" alt="" class="w-20 h-20 object-cover rounded-xl shrink-0">

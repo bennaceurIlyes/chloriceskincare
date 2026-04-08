@@ -85,43 +85,8 @@
         <p class="text-forest/50 mt-4 max-w-md mx-auto" data-i18n="products.subtitle">Curated formulations born from the wisdom of the Sahara.</p>
       </div>
 
-      <div class="masonry-grid">
-        <a href="product.html?id=cream" class="product-card reveal reveal-delay-1 no-underline text-forest">
-          <div class="product-img">
-            <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=600&q=80" alt="Brightening Cream" loading="lazy">
-            <svg class="spinning-badge" viewBox="0 0 100 100"><defs><path id="bc" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/></defs><text><textPath href="#bc" class="badge-text" data-i18n="badge.text">BÉCHAR EXCLUSIVE • SPECIAL OFFER • </textPath></text></svg>
-          </div>
-          <div class="product-info">
-            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.cream.tag">Best Seller</span>
-            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.cream.name">Béchar Brightening Cream</h3>
-            <p class="text-forest/50 text-sm mt-1" data-i18n="product.cream.price">3,500 DZD</p>
-            <button class="add-to-cart-btn" data-product="cream" data-i18n="cart.addToCart">Add to Cart</button>
-          </div>
-        </a>
-
-        <a href="product.html?id=oil" class="product-card reveal reveal-delay-2 no-underline text-forest">
-          <div class="product-img">
-            <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&q=80" alt="Hair Oil" loading="lazy">
-          </div>
-          <div class="product-info">
-            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.oil.tag">Nourishing</span>
-            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.oil.name">Ayurvedic Hair Oil</h3>
-            <p class="text-forest/50 text-sm mt-1" data-i18n="product.oil.price">2,800 DZD</p>
-            <button class="add-to-cart-btn" data-product="oil" data-i18n="cart.addToCart">Add to Cart</button>
-          </div>
-        </a>
-
-        <a href="product.html?id=serum" class="product-card reveal reveal-delay-3 no-underline text-forest">
-          <div class="product-img">
-            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80" alt="Rose Serum" loading="lazy">
-          </div>
-          <div class="product-info">
-            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.serum.tag">New</span>
-            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.serum.name">Sahara Rose Serum</h3>
-            <p class="text-forest/50 text-sm mt-1" data-i18n="product.serum.price">4,200 DZD</p>
-            <button class="add-to-cart-btn" data-product="serum" data-i18n="cart.addToCart">Add to Cart</button>
-          </div>
-        </a>
+      <div class="masonry-grid" id="featured-products-grid">
+        <!-- Dynamically populated from Supabase -->
       </div>
 
       <div class="text-center mt-16 reveal">
@@ -132,6 +97,58 @@
       </div>
     </div>
   </section>
+
+  <script>
+    /* Render featured products dynamically from Supabase data */
+    function renderDynamicProducts() {
+      const grid = document.getElementById('featured-products-grid');
+      if (!grid) return;
+
+      const keys = ['cream', 'oil', 'serum'];
+      const lang = localStorage.getItem('chlorice-lang') || 'en';
+
+      grid.innerHTML = keys.map((key, i) => {
+        const p = productData[key];
+        const name = (translations[lang] && translations[lang][`product.${key}.name`]) || p.dbName || key;
+        const price = p.price ? p.price.toLocaleString() + ' DZD' : '';
+        const tag = (translations[lang] && translations[lang][`product.${key}.tag`]) || '';
+        const isFirst = i === 0;
+
+        return `<a href="product.html?id=${key}" class="product-card reveal reveal-delay-${i+1} no-underline text-forest">
+          <div class="product-img">
+            <img src="${p.img}" alt="${name}" loading="lazy">
+            ${isFirst ? `<svg class="spinning-badge" viewBox="0 0 100 100"><defs><path id="bc" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/></defs><text><textPath href="#bc" class="badge-text" data-i18n="badge.text">BÉCHAR EXCLUSIVE • SPECIAL OFFER • </textPath></text></svg>` : ''}
+          </div>
+          <div class="product-info">
+            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.${key}.tag">${tag}</span>
+            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.${key}.name">${name}</h3>
+            <p class="text-forest/50 text-sm mt-1">${price}</p>
+            <button class="add-to-cart-btn" data-product="${key}" data-i18n="cart.addToCart">Add to Cart</button>
+          </div>
+        </a>`;
+      }).join('');
+
+      // Re-bind cart buttons for the new elements
+      grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          Cart.add(btn.dataset.product);
+        });
+      });
+
+      // Re-apply i18n
+      I18n.apply(I18n.currentLang);
+
+      // Re-init scroll reveal for new elements
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) { entry.target.classList.add('revealed'); observer.unobserve(entry.target); }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+  </script>
 
   <!-- SPLIT REVIEW -->
   <section class="split-section hairline-top">
