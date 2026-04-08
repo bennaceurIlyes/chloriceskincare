@@ -308,7 +308,7 @@ html[dir="rtl"] .cart-drawer {
   border-left: none;
   border-right: var(--hairline);
 }
-.cart-drawer.active { transform: translateX(0); }
+html .cart-drawer.active { transform: translateX(0); }
 
 /* Cart Qty Buttons */
 .cart-qty-btn {
