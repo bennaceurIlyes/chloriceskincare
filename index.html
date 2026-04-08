@@ -127,16 +127,6 @@
         </a>`;
       }).join('');
 
-      // Re-bind cart buttons for the new elements
-      grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          e.stopPropagation();
-          Cart.add(btn.dataset.product);
-        });
-      });
-
-      // Re-apply i18n
       I18n.apply(I18n.currentLang);
 
       // Re-init scroll reveal for new elements

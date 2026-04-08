@@ -1,47 +1,57 @@
 /* =============================================
    CHLORICE — Cart Module
-   Cart drawer, add/remove, checkout link
+   Robust implementation with Event Delegation
    ============================================= */
 
 const Cart = {
   items: [],
 
-  /* Prices come from productData (updated by Supabase) with fallback */
-  getPrice(id) {
-    return productData[id]?.price || { cream: 3500, oil: 2800, serum: 4200 }[id] || 0;
-  },
-
-  /* Get display name — try translation first, then DB name, then capitalized ID */
-  getName(id) {
-    const lang = I18n?.currentLang || localStorage.getItem('chlorice-lang') || 'en';
-    const translationKey = `product.${id}.name`;
-    const translated = translations?.[lang]?.[translationKey];
-    if (translated) return translated;
-    // Fallback to DB name from productData
-    if (productData[id]?.dbName) return productData[id].dbName;
-    // Final fallback: capitalize the ID
-    return id.charAt(0).toUpperCase() + id.slice(1);
-  },
-
   init() {
-    this.items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
+    // Load from storage
+    try {
+      this.items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
+    } catch(e) { 
+      this.items = []; 
+    }
+    
     this.injectDrawer();
     this.updateBadge();
-    this.bindEvents();
+    this.setupDelegation();
+    
+    // Explicitly expose to window to ensure global availability
+    window.Cart = this;
+  },
+
+  /* Prices come from productData with fallback */
+  getPrice(id) {
+    if (typeof productData !== 'undefined' && productData[id]) {
+      return Number(productData[id].price) || 0;
+    }
+    return { cream: 3500, oil: 2800, serum: 4200 }[id] || 0;
+  },
+
+  /* Get name from translations or DB cache */
+  getName(id) {
+    const lang = (typeof I18n !== 'undefined' ? I18n.currentLang : localStorage.getItem('chlorice-lang')) || 'en';
+    const translationKey = `product.${id}.name`;
+    
+    if (typeof translations !== 'undefined' && translations[lang] && translations[lang][translationKey]) {
+      return translations[lang][translationKey];
+    }
+    if (typeof productData !== 'undefined' && productData[id] && productData[id].dbName) {
+      return productData[id].dbName;
+    }
+    return id.charAt(0).toUpperCase() + id.slice(1).replace('_', ' ');
   },
 
   injectDrawer() {
-    // Remove any existing drawer first
-    document.getElementById('cart-overlay')?.remove();
-    document.getElementById('cart-drawer')?.remove();
+    if (document.getElementById('cart-drawer')) return;
 
-    // Create overlay
     const overlay = document.createElement('div');
     overlay.id = 'cart-overlay';
     overlay.className = 'cart-overlay';
     document.body.appendChild(overlay);
 
-    // Create drawer
     const drawer = document.createElement('aside');
     drawer.id = 'cart-drawer';
     drawer.className = 'cart-drawer';
@@ -66,19 +76,50 @@ const Cart = {
     document.body.appendChild(drawer);
   },
 
-  bindEvents() {
-    document.getElementById('cart-icon')?.addEventListener('click', () => this.open());
-    document.getElementById('cart-close-btn')?.addEventListener('click', () => this.close());
-    document.getElementById('cart-overlay')?.addEventListener('click', () => this.close());
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') this.close(); });
-
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
+  setupDelegation() {
+    // SINGLE Listener for ALL clicks on the page related to cart
+    document.addEventListener('click', (e) => {
+      // 1. Add to Cart buttons (even dynamic ones)
+      const addBtn = e.target.closest('.add-to-cart-btn');
+      if (addBtn) {
         e.preventDefault();
         e.stopPropagation();
-        this.add(btn.dataset.product);
-      });
+        const pId = addBtn.dataset.product;
+        if (pId) this.add(pId);
+        return;
+      }
+
+      // 2. Cart Icon in Navbar
+      if (e.target.closest('#cart-icon')) {
+        this.open();
+        return;
+      }
+
+      // 3. Close buttons or Overlay
+      if (e.target.closest('#cart-close-btn') || e.target.id === 'cart-overlay') {
+        this.close();
+        return;
+      }
+
+      // 4. Quantity Adjustments (using data-delta)
+      const qtyBtn = e.target.closest('.cart-qty-btn');
+      if (qtyBtn) {
+        const pId = qtyBtn.dataset.product;
+        const delta = parseInt(qtyBtn.dataset.delta);
+        if (pId) this.updateQty(pId, delta);
+        return;
+      }
+
+      // 5. Removes
+      const removeBtn = e.target.closest('.cart-remove-btn');
+      if (removeBtn) {
+        const pId = removeBtn.dataset.product;
+        if (pId) this.remove(pId);
+        return;
+      }
     });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') this.close(); });
   },
 
   add(id) {
@@ -138,9 +179,12 @@ const Cart = {
     if (!list) return;
 
     if (this.items.length === 0) {
-      list.innerHTML = '<div class="text-center py-16"><svg class="mx-auto mb-4 opacity-20" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg><p class="text-forest/40 text-sm" data-i18n="cart.empty">Your cart is empty</p></div>';
+      list.innerHTML = `<div class="text-center py-16">
+        <svg class="mx-auto mb-4 opacity-20" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        <p class="text-forest/40 text-sm" data-i18n="cart.empty">Your cart is empty</p>
+      </div>`;
       if (footer) footer.style.display = 'none';
-      I18n.apply(I18n.currentLang);
+      if (typeof I18n !== 'undefined') I18n.apply(I18n.currentLang);
       return;
     }
 
@@ -148,17 +192,18 @@ const Cart = {
     list.innerHTML = this.items.map(item => {
       const name = this.getName(item.id);
       const price = this.getPrice(item.id);
-      const img = productData[item.id]?.img || '';
+      const img = (typeof productData !== 'undefined' && productData[item.id]?.img) || '';
+      
       return `<div class="flex gap-4 mb-5 pb-5" style="border-bottom:.5px solid rgba(26,36,33,.08)">
-        <img src="${img}" alt="" class="w-20 h-20 object-cover rounded-xl shrink-0">
+        <img src="${img}" alt="" class="w-20 h-20 object-cover rounded-xl shrink-0 bg-bone">
         <div class="flex-1 min-w-0">
           <p class="font-medium text-sm truncate">${name}</p>
           <p class="text-gold text-sm mt-1">${(price * item.qty).toLocaleString()} DZD</p>
           <div class="flex items-center gap-3 mt-3">
-            <button onclick="Cart.updateQty('${item.id}',-1)" class="cart-qty-btn">\u2212</button>
+            <button class="cart-qty-btn" data-product="${item.id}" data-delta="-1">\u2212</button>
             <span class="text-sm font-medium w-5 text-center">${item.qty}</span>
-            <button onclick="Cart.updateQty('${item.id}',1)" class="cart-qty-btn">+</button>
-            <button onclick="Cart.remove('${item.id}')" class="ml-auto cart-remove-btn">
+            <button class="cart-qty-btn" data-product="${item.id}" data-delta="1">+</button>
+            <button class="ml-auto cart-remove-btn" data-product="${item.id}">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </div>
@@ -166,8 +211,9 @@ const Cart = {
       </div>`;
     }).join('');
 
-    document.getElementById('cart-total-val').textContent = `${this.getTotal().toLocaleString()} DZD`;
-    I18n.apply(I18n.currentLang);
+    const totalVal = document.getElementById('cart-total-val');
+    if (totalVal) totalVal.textContent = `${this.getTotal().toLocaleString()} DZD`;
+    if (typeof I18n !== 'undefined') I18n.apply(I18n.currentLang);
   },
 
   toast(id) {

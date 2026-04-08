@@ -158,17 +158,18 @@
   <script src="js/cart.js"></script>
   <script src="js/app.js"></script>
   <script>
-    // Bind detail page Add to Cart button + show real price from DB
+    // Fill product ID for global cart delegation + show real price from DB
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       const btn = document.getElementById('detail-add-to-cart');
+      
       if (btn && id) {
-        btn.addEventListener('click', () => Cart.add(id));
+        btn.setAttribute('data-product', id);
       }
 
       // Update price display with real DB price
-      if (id && productData[id]) {
+      if (id && typeof productData !== 'undefined' && productData[id]) {
         const priceEl = document.getElementById('detail-price');
         if (priceEl && productData[id].price) {
           priceEl.textContent = productData[id].price.toLocaleString() + ' DZD';

@@ -145,15 +145,6 @@
         }).join('');
       }
 
-      // Bind cart buttons
-      grid.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          e.stopPropagation();
-          Cart.add(btn.dataset.product);
-        });
-      });
-
       // Re-apply i18n
       I18n.apply(I18n.currentLang);
 
