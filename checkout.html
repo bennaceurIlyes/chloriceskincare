@@ -26,8 +26,7 @@
   <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
     <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
       <a href="index.html" class="flex items-center gap-3 no-underline">
-        <span class="text-2xl">🌿</span>
-        <span class="font-playfair font-heading text-xl font-semibold tracking-wide text-forest">Chlorice</span>
+        <img src="image/logo.png" alt="Chlorice Skincare" class="h-10 w-auto" style="mix-blend-mode:multiply;">
       </a>
       <div class="nav-links hidden md:flex items-center gap-10">
         <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
@@ -63,6 +62,10 @@
         <div class="lg:col-span-2 reveal">
           <h3 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-8" data-i18n="checkout.summary">Order Summary</h3>
           <div id="checkout-items"></div>
+          <div id="checkout-delivery" class="mt-4 flex justify-between items-center text-sm" style="display:none">
+            <span class="text-forest/60">🚚 Livraison</span>
+            <span class="font-medium text-forest" id="delivery-price">0 DZD</span>
+          </div>
           <div class="mt-6 pt-6 flex justify-between items-center" style="border-top:.5px solid rgba(26,36,33,.15)">
             <span class="font-semibold" data-i18n="cart.total">Total</span>
             <span class="text-2xl font-semibold text-gold" id="checkout-total">0 DZD</span>
@@ -151,12 +154,6 @@
               </select>
             </div>
 
-            <!-- Address -->
-            <div>
-              <label class="block text-xs font-semibold tracking-[1px] uppercase text-forest/50 mb-3" data-i18n="checkout.address">Address / Delivery Notes</label>
-              <textarea id="input-address" class="checkout-input" rows="3" placeholder="Rue, quartier, point de repère..."></textarea>
-            </div>
-
             <!-- Submit -->
             <button type="submit" class="btn-primary" style="width:100%;display:flex;justify-content:center" data-i18n="checkout.submit">
               Place Order
@@ -186,7 +183,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
         <div class="md:col-span-2">
-          <div class="flex items-center gap-3 mb-6"><span class="text-2xl">🌿</span><span class="font-heading font-playfair text-2xl text-bone">Chlorice</span></div>
+          <div class="flex items-center gap-3 mb-6"><img src="image/logo.png" alt="Chlorice" class="h-10 w-auto" style="filter:brightness(10);"></div>
           <p class="text-bone/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
         </div>
         <div>
@@ -218,6 +215,14 @@
   <script src="js/cart.js"></script>
   <script src="js/app.js"></script>
   <script>
+    /* ── Delivery pricing by wilaya ── */
+    function getDeliveryPrice(wilayaCode) {
+      const code = String(wilayaCode);
+      if (code === '08') return 250;                           // Béchar
+      if (code === '11' || code === '37') return 1600;         // Tamanrasset, Tindouf
+      return 850;                                               // All others
+    }
+
     /* ── Checkout Page Logic — Supabase Integrated ── */
     document.addEventListener('DOMContentLoaded', async () => {
       const items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
@@ -235,7 +240,6 @@
 
       if (supaProducts.length > 0) {
         supaProducts.forEach(p => {
-          // Match by name pattern (case-insensitive partial match)
           const lowerName = (p.name || '').toLowerCase();
           if (lowerName.includes('cream') || lowerName.includes('brightening')) {
             priceMap['cream'] = { dbId: p.id, price: Number(p.price) || 3500, name: p.name };
@@ -247,7 +251,6 @@
         });
       }
 
-      // Fallback for any missing mappings
       ['cream', 'oil', 'serum'].forEach(k => {
         if (!priceMap[k]) priceMap[k] = { dbId: null, price: fallbackPrices[k], name: k };
       });
@@ -262,13 +265,13 @@
         return;
       }
 
-      let total = 0;
+      let subtotal = 0;
       container.innerHTML = items.map(item => {
         const pm = priceMap[item.id] || { price: fallbackPrices[item.id] || 0, name: item.id };
         const name = (translations[lang] && translations[lang][`product.${item.id}.name`]) || pm.name;
         const price = pm.price * item.qty;
         const img = productData[item.id]?.img || '';
-        total += price;
+        subtotal += price;
         return `<div class="order-summary-item">
           <img src="${img}" alt="" class="w-16 h-16 rounded-xl object-cover shrink-0">
           <div class="flex-1 min-w-0">
@@ -279,7 +282,20 @@
         </div>`;
       }).join('');
 
-      document.getElementById('checkout-total').textContent = `${total.toLocaleString()} DZD`;
+      document.getElementById('checkout-total').textContent = `${subtotal.toLocaleString()} DZD`;
+
+      // Update delivery + total when wilaya changes
+      const wilayaSelect = document.getElementById('input-wilaya');
+      const deliveryRow = document.getElementById('checkout-delivery');
+      const deliveryPriceEl = document.getElementById('delivery-price');
+      const totalEl = document.getElementById('checkout-total');
+
+      wilayaSelect.addEventListener('change', () => {
+        const delivery = getDeliveryPrice(wilayaSelect.value);
+        deliveryRow.style.display = 'flex';
+        deliveryPriceEl.textContent = `${delivery.toLocaleString()} DZD`;
+        totalEl.textContent = `${(subtotal + delivery).toLocaleString()} DZD`;
+      });
 
       // Form submit → Supabase
       document.getElementById('checkout-form').addEventListener('submit', async (e) => {
@@ -287,7 +303,6 @@
         const name = document.getElementById('input-name').value.trim();
         const phone = document.getElementById('input-phone').value.trim();
         const wilaya = document.getElementById('input-wilaya').value;
-        const address = document.getElementById('input-address').value.trim();
 
         if (!name || !phone || !wilaya) {
           [document.getElementById('input-name'), document.getElementById('input-phone'), document.getElementById('input-wilaya')].forEach(el => {
@@ -299,9 +314,9 @@
           return;
         }
 
-        // Build full address with wilaya
         const wilayaText = document.getElementById('input-wilaya').selectedOptions[0]?.text || wilaya;
-        const fullAddress = `${wilayaText}${address ? ' — ' + address : ''}`;
+        const delivery = getDeliveryPrice(wilaya);
+        const fullAddress = `${wilayaText} (Livraison: ${delivery} DZD)`;
 
         // Disable submit button
         const submitBtn = e.target.querySelector('button[type="submit"]');
