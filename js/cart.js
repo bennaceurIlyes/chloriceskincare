@@ -11,6 +11,18 @@ const Cart = {
     return productData[id]?.price || { cream: 3500, oil: 2800, serum: 4200 }[id] || 0;
   },
 
+  /* Get display name — try translation first, then DB name, then capitalized ID */
+  getName(id) {
+    const lang = I18n?.currentLang || localStorage.getItem('chlorice-lang') || 'en';
+    const translationKey = `product.${id}.name`;
+    const translated = translations?.[lang]?.[translationKey];
+    if (translated) return translated;
+    // Fallback to DB name from productData
+    if (productData[id]?.dbName) return productData[id].dbName;
+    // Final fallback: capitalize the ID
+    return id.charAt(0).toUpperCase() + id.slice(1);
+  },
+
   init() {
     this.items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
     this.injectDrawer();
@@ -19,29 +31,39 @@ const Cart = {
   },
 
   injectDrawer() {
-    const wrap = document.createElement('div');
-    wrap.innerHTML = `
-      <div id="cart-overlay" class="cart-overlay"></div>
-      <aside id="cart-drawer" class="cart-drawer">
-        <div class="flex items-center justify-between p-6" style="border-bottom:.5px solid rgba(26,36,33,.12)">
-          <h3 class="font-heading font-playfair text-xl" data-i18n="cart.title">Your Cart</h3>
-          <button id="cart-close-btn" style="background:none;border:none;cursor:pointer;padding:8px" class="hover:opacity-50 transition-all">
-            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
+    // Remove any existing drawer first
+    document.getElementById('cart-overlay')?.remove();
+    document.getElementById('cart-drawer')?.remove();
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'cart-overlay';
+    overlay.className = 'cart-overlay';
+    document.body.appendChild(overlay);
+
+    // Create drawer
+    const drawer = document.createElement('aside');
+    drawer.id = 'cart-drawer';
+    drawer.className = 'cart-drawer';
+    drawer.innerHTML = `
+      <div class="flex items-center justify-between p-6" style="border-bottom:.5px solid rgba(26,36,33,.12)">
+        <h3 class="font-heading font-playfair text-xl" data-i18n="cart.title">Your Cart</h3>
+        <button id="cart-close-btn" style="background:none;border:none;cursor:pointer;padding:8px" class="hover:opacity-50 transition-all">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="cart-items-list" class="flex-1 overflow-y-auto p-6"></div>
+      <div id="cart-footer" class="p-6" style="border-top:.5px solid rgba(26,36,33,.12);display:none">
+        <div class="flex justify-between items-center mb-6">
+          <span class="font-semibold" data-i18n="cart.total">Total</span>
+          <span class="text-xl font-semibold text-gold" id="cart-total-val">0 DZD</span>
         </div>
-        <div id="cart-items-list" class="flex-1 overflow-y-auto p-6"></div>
-        <div id="cart-footer" class="p-6" style="border-top:.5px solid rgba(26,36,33,.12);display:none">
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-semibold" data-i18n="cart.total">Total</span>
-            <span class="text-xl font-semibold text-gold" id="cart-total-val">0 DZD</span>
-          </div>
-          <a href="checkout.html" class="btn-primary" style="display:flex;width:100%;justify-content:center;text-align:center;text-decoration:none">
-            <span data-i18n="cart.checkout">Proceed to Checkout</span>
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </aside>`;
-    document.body.appendChild(wrap);
+        <a href="checkout.html" class="btn-primary" style="display:flex;width:100%;justify-content:center;text-align:center;text-decoration:none">
+          <span data-i18n="cart.checkout">Proceed to Checkout</span>
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>`;
+    document.body.appendChild(drawer);
   },
 
   bindEvents() {
@@ -124,7 +146,7 @@ const Cart = {
 
     if (footer) footer.style.display = 'block';
     list.innerHTML = this.items.map(item => {
-      const name = I18n.t(`product.${item.id}.name`);
+      const name = this.getName(item.id);
       const price = this.getPrice(item.id);
       const img = productData[item.id]?.img || '';
       return `<div class="flex gap-4 mb-5 pb-5" style="border-bottom:.5px solid rgba(26,36,33,.08)">
@@ -149,7 +171,7 @@ const Cart = {
   },
 
   toast(id) {
-    const name = I18n.t(`product.${id}.name`);
+    const name = this.getName(id);
     const t = document.createElement('div');
     t.className = 'cart-toast';
     t.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> ${name}`;
