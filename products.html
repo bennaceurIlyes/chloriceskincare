@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Chlorice Skincare</title>
+  <meta name="description" content="Explore our complete range of Saharan botanical luxury skincare.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { bone:'#FDFCF0', forest:'#1A2421', gold:'#D4A373', 'gold-light':'#E8C9A0' },
+        fontFamily: { playfair:['Playfair Display','serif'], poppins:['Poppins','sans-serif'] }
+      }}
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-bone text-forest font-poppins">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
+      <a href="index.html" class="flex items-center gap-3 no-underline">
+        <span class="text-2xl">🌿</span>
+        <span class="font-playfair font-heading text-xl font-semibold tracking-wide text-forest">Chlorice</span>
+      </a>
+      <div class="nav-links hidden md:flex items-center gap-10">
+        <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
+        <a href="products.html" class="text-sm font-medium tracking-wide text-forest hover:text-forest transition-all no-underline" data-i18n="nav.collection">Collection</a>
+        <a href="story.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.story">Our Story</a>
+        <a href="index.html#reviews" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.reviews">Reviews</a>
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="fr">FR</button>
+          <button class="lang-btn" data-lang="ar">AR</button>
+        </div>
+        <button id="cart-icon" class="relative" style="background:none;border:none;cursor:pointer;padding:4px">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center" style="display:none">0</span>
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div id="mobile-nav" class="nav-links-mobile">
+      <a href="index.html" class="text-sm font-medium" data-i18n="nav.home">Home</a>
+      <a href="products.html" class="text-sm font-medium" data-i18n="nav.collection">Collection</a>
+      <a href="story.html" class="text-sm font-medium" data-i18n="nav.story">Our Story</a>
+      <a href="index.html#reviews" class="text-sm font-medium" data-i18n="nav.reviews">Reviews</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <section class="pt-36 pb-20 hairline-bottom">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+      <p class="section-label reveal">CHLORICE SKINCARE</p>
+      <h1 class="text-5xl md:text-6xl font-heading font-playfair mt-4 reveal" data-i18n="products.page.title">Our Products</h1>
+      <p class="text-forest/50 mt-6 max-w-lg mx-auto reveal" data-i18n="products.page.subtitle">Explore our complete range of Saharan botanical luxury.</p>
+    </div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section style="padding: var(--section-gap) 0;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+        <!-- Cream -->
+        <a href="product.html?id=cream" class="product-card reveal reveal-delay-1 no-underline text-forest">
+          <div class="product-img">
+            <img src="https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=600&q=80" alt="Brightening Cream" loading="lazy">
+            <svg class="spinning-badge" viewBox="0 0 100 100"><defs><path id="bc" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/></defs><text><textPath href="#bc" class="badge-text" data-i18n="badge.text">BÉCHAR EXCLUSIVE • SPECIAL OFFER • </textPath></text></svg>
+          </div>
+          <div class="product-info">
+            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.cream.tag">Best Seller</span>
+            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.cream.name">Béchar Brightening Cream</h3>
+            <p class="text-forest/60 text-sm mt-2 line-clamp-2" data-i18n="product.cream.desc">A luxurious brightening cream infused with Arbutin and desert botanicals.</p>
+            <p class="text-forest font-semibold mt-4" data-i18n="product.cream.price">3,500 DZD</p>
+            <button class="add-to-cart-btn" data-product="cream" data-i18n="cart.addToCart">Add to Cart</button>
+          </div>
+        </a>
+
+        <!-- Oil -->
+        <a href="product.html?id=oil" class="product-card reveal reveal-delay-2 no-underline text-forest">
+          <div class="product-img">
+            <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=600&q=80" alt="Hair Oil" loading="lazy">
+          </div>
+          <div class="product-info">
+            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.oil.tag">Nourishing</span>
+            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.oil.name">Ayurvedic Hair Oil</h3>
+            <p class="text-forest/60 text-sm mt-2 line-clamp-2" data-i18n="product.oil.desc">A potent blend of cold-pressed oils rooted in Ayurvedic tradition.</p>
+            <p class="text-forest font-semibold mt-4" data-i18n="product.oil.price">2,800 DZD</p>
+            <button class="add-to-cart-btn" data-product="oil" data-i18n="cart.addToCart">Add to Cart</button>
+          </div>
+        </a>
+
+        <!-- Serum -->
+        <a href="product.html?id=serum" class="product-card reveal reveal-delay-3 no-underline text-forest">
+          <div class="product-img">
+            <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80" alt="Rose Serum" loading="lazy">
+          </div>
+          <div class="product-info">
+            <span class="text-[10px] font-semibold tracking-[2px] uppercase text-gold" data-i18n="product.serum.tag">New</span>
+            <h3 class="font-heading font-playfair text-xl mt-2" data-i18n="product.serum.name">Sahara Rose Serum</h3>
+            <p class="text-forest/60 text-sm mt-2 line-clamp-2" data-i18n="product.serum.desc">A deeply hydrating serum powered by Damask Rose.</p>
+            <p class="text-forest font-semibold mt-4" data-i18n="product.serum.price">4,200 DZD</p>
+            <button class="add-to-cart-btn" data-product="serum" data-i18n="cart.addToCart">Add to Cart</button>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="hairline-top bg-forest text-bone/80" style="padding: 80px 0 40px;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-6"><span class="text-2xl">🌿</span><span class="font-heading font-playfair text-2xl text-bone">Chlorice</span></div>
+          <p class="text-bone/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation</h4>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
+            <a href="products.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
+            <a href="story.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.story">Our Story</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.legal">Legal</h4>
+          <div class="flex flex-col gap-3">
+            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-bone/10 pt-8 text-center">
+        <p class="text-bone/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

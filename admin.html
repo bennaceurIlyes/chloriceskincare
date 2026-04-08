@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chlorice Admin — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bone: '#FDFCF0', forest: '#1A2421', gold: '#D4A373',
+            'gold-light': '#E8C9A0', 'gold-dark': '#B8894F',
+          },
+          fontFamily: { playfair: ['Playfair Display','serif'], poppins: ['Poppins','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #FDFCF0; color: #1A2421; }
+    .sidebar { background: #1A2421; min-height: 100vh; }
+    .sidebar a { transition: all .3s cubic-bezier(.16,1,.3,1); }
+    .sidebar a:hover, .sidebar a.active { background: rgba(253,252,240,0.08); }
+    .stat-card { border: 0.5px solid rgba(26,36,33,0.12); transition: all .3s cubic-bezier(.16,1,.3,1); }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,36,33,0.06); }
+    .table-row { border-bottom: 0.5px solid rgba(26,36,33,0.08); transition: background .2s; }
+    .table-row:hover { background: rgba(212,163,115,0.04); }
+    textarea { resize: vertical; }
+    .tab-btn { transition: all .3s; }
+    .tab-btn.active { border-bottom-color: #D4A373; opacity: 1; }
+    .loading-spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(26,36,33,0.1); border-top-color: #D4A373; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .status-badge { font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 500; cursor: pointer; position: relative; }
+    .status-pending { background: #FEF3C7; color: #D97706; }
+    .status-confirmed { background: #DBEAFE; color: #2563EB; }
+    .status-shipped { background: #E0E7FF; color: #4F46E5; }
+    .status-delivered { background: #D1FAE5; color: #059669; }
+    .status-cancelled { background: #FEE2E2; color: #DC2626; }
+    .status-dropdown { position: absolute; top: 100%; right: 0; background: white; border: 1px solid rgba(26,36,33,0.1); border-radius: 12px; padding: 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); z-index: 50; display: none; min-width: 140px; }
+    .status-dropdown.open { display: block; }
+    .status-dropdown button { display: block; width: 100%; text-align: left; padding: 8px 12px; font-size: 12px; border: none; background: none; cursor: pointer; border-radius: 8px; transition: background 0.2s; }
+    .status-dropdown button:hover { background: rgba(212,163,115,0.1); }
+
+    /* Login overlay */
+    .login-overlay { position: fixed; inset: 0; background: #FDFCF0; z-index: 100; display: flex; align-items: center; justify-content: center; }
+    .login-card { background: white; border: 0.5px solid rgba(26,36,33,0.12); border-radius: 24px; padding: 48px; width: 100%; max-width: 400px; }
+    .login-input { width: 100%; padding: 12px 16px; border: 1px solid rgba(26,36,33,0.12); border-radius: 12px; font-size: 14px; background: #FDFCF0; outline: none; transition: border-color 0.3s; }
+    .login-input:focus { border-color: #D4A373; }
+    .login-error { color: #DC2626; font-size: 12px; margin-top: 8px; display: none; }
+
+    /* Mobile sidebar */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      main { margin-left: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <div class="flex items-center gap-3 mb-8 justify-center">
+        <span class="text-2xl">🌿</span>
+        <span class="font-playfair text-xl font-semibold">Chlorice Admin</span>
+      </div>
+      <form id="login-form" class="space-y-5">
+        <div>
+          <label class="block text-xs font-semibold tracking-wider uppercase text-forest/50 mb-2">Email</label>
+          <input type="email" id="login-email" class="login-input" placeholder="admin@chlorice.com" required>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold tracking-wider uppercase text-forest/50 mb-2">Password</label>
+          <input type="password" id="login-password" class="login-input" placeholder="••••••••" required>
+        </div>
+        <p id="login-error" class="login-error">Invalid email or password</p>
+        <button type="submit" class="w-full bg-forest text-bone py-3 rounded-xl text-sm font-medium hover:bg-gold transition-all">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-64 p-6 flex flex-col shrink-0 fixed h-full">
+      <div class="flex items-center gap-3 mb-12">
+        <span class="text-xl">🌿</span>
+        <span class="font-playfair text-lg text-bone/90 font-semibold">Chlorice</span>
+      </div>
+      <nav class="flex flex-col gap-1 flex-1">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/60 text-sm active" data-section="overview">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Overview
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/60 text-sm" data-section="products">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Products
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/60 text-sm" data-section="orders">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Orders
+        </a>
+        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/60 text-sm" data-section="translations">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+          Translations
+        </a>
+      </nav>
+      <button id="logout-btn" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/40 text-xs hover:text-bone/70 transition-all" style="background:none;border:none;cursor:pointer;text-align:left;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Logout
+      </button>
+      <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-bone/40 text-xs hover:text-bone/70 mt-2">
+        ← Back to Store
+      </a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 flex-1 p-8 min-h-screen">
+
+      <!-- OVERVIEW SECTION -->
+      <div id="section-overview">
+        <div class="mb-8">
+          <h1 class="font-playfair text-3xl font-semibold">Dashboard</h1>
+          <p class="text-forest/50 text-sm mt-1">Chlorice Skincare — Live Data from Supabase</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div class="stat-card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-2">Revenue</p>
+            <p class="text-3xl font-semibold" id="stat-revenue"><span class="loading-spinner"></span></p>
+            <p class="text-forest/40 text-xs mt-1">DZD total</p>
+          </div>
+          <div class="stat-card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-2">Orders</p>
+            <p class="text-3xl font-semibold" id="stat-orders"><span class="loading-spinner"></span></p>
+            <p class="text-forest/40 text-xs mt-1">Total orders</p>
+          </div>
+          <div class="stat-card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-2">Products</p>
+            <p class="text-3xl font-semibold" id="stat-products"><span class="loading-spinner"></span></p>
+            <p class="text-forest/40 text-xs mt-1">Active SKUs</p>
+          </div>
+          <div class="stat-card bg-white rounded-2xl p-6">
+            <p class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-2">Languages</p>
+            <p class="text-3xl font-semibold">3</p>
+            <p class="text-forest/40 text-xs mt-1">EN / FR / AR</p>
+          </div>
+        </div>
+
+        <!-- Recent Orders Table -->
+        <div class="bg-white rounded-2xl border border-forest/[0.06] overflow-hidden">
+          <div class="px-6 py-5 border-b border-forest/[0.06] flex items-center justify-between">
+            <h2 class="font-semibold text-sm">Recent Orders</h2>
+            <button onclick="loadOverviewData()" class="text-xs text-gold hover:text-gold-dark transition-all" style="background:none;border:none;cursor:pointer">↻ Refresh</button>
+          </div>
+          <div id="recent-orders-table" class="overflow-x-auto">
+            <div class="flex items-center justify-center py-12">
+              <span class="loading-spinner"></span>
+              <span class="text-forest/40 text-sm ml-3">Loading orders...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS SECTION -->
+      <div id="section-products" class="hidden">
+        <div class="mb-8 flex items-center justify-between">
+          <div>
+            <h1 class="font-playfair text-3xl font-semibold">Products</h1>
+            <p class="text-forest/50 text-sm mt-1">Manage your product catalog</p>
+          </div>
+          <button onclick="loadProductsSection()" class="text-xs text-gold hover:text-gold-dark transition-all px-4 py-2 rounded-lg border border-gold/30" style="background:none;cursor:pointer">↻ Refresh</button>
+        </div>
+        <div id="products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="flex items-center justify-center py-12 col-span-3">
+            <span class="loading-spinner"></span>
+            <span class="text-forest/40 text-sm ml-3">Loading products...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERS SECTION -->
+      <div id="section-orders" class="hidden">
+        <div class="mb-8 flex items-center justify-between">
+          <div>
+            <h1 class="font-playfair text-3xl font-semibold">Orders</h1>
+            <p class="text-forest/50 text-sm mt-1">All customer orders from Supabase</p>
+          </div>
+          <button onclick="loadOrdersSection()" class="text-xs text-gold hover:text-gold-dark transition-all px-4 py-2 rounded-lg border border-gold/30" style="background:none;cursor:pointer">↻ Refresh</button>
+        </div>
+        <div id="orders-table-container" class="bg-white rounded-2xl border border-forest/[0.06] overflow-hidden">
+          <div class="flex items-center justify-center py-12">
+            <span class="loading-spinner"></span>
+            <span class="text-forest/40 text-sm ml-3">Loading orders...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANSLATIONS SECTION -->
+      <div id="section-translations" class="hidden">
+        <div class="mb-8">
+          <h1 class="font-playfair text-3xl font-semibold">Translation Manager</h1>
+          <p class="text-forest/50 text-sm mt-1">Edit text for all 3 languages</p>
+        </div>
+
+        <!-- Language Tabs -->
+        <div class="flex gap-0 border-b border-forest/10 mb-8">
+          <button class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent opacity-40 active" data-tlang="en">English</button>
+          <button class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent opacity-40" data-tlang="fr">Français</button>
+          <button class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent opacity-40" data-tlang="ar">العربية</button>
+        </div>
+
+        <div id="translation-fields" class="space-y-4"></div>
+
+        <button id="save-translations" class="mt-8 bg-forest text-bone px-8 py-3 rounded-xl text-sm font-medium hover:bg-gold transition-all">
+          Save Changes
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script>
+    /* ══════════════════════════════════════════════
+       CHLORICE ADMIN — Supabase-Powered Dashboard
+       ══════════════════════════════════════════════ */
+
+    // ─── Auth ───────────────────────────────────
+    const loginOverlay = document.getElementById('login-overlay');
+    const isLoggedIn = sessionStorage.getItem('chlorice-admin-auth');
+
+    if (isLoggedIn) {
+      loginOverlay.style.display = 'none';
+      bootDashboard();
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      const errorEl = document.getElementById('login-error');
+      errorEl.style.display = 'none';
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading-spinner"></span>';
+
+      const ok = await adminLogin(email, password);
+      if (ok) {
+        sessionStorage.setItem('chlorice-admin-auth', 'true');
+        loginOverlay.style.display = 'none';
+        bootDashboard();
+      } else {
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      sessionStorage.removeItem('chlorice-admin-auth');
+      location.reload();
+    });
+
+    // ─── Boot ───────────────────────────────────
+    function bootDashboard() {
+      loadOverviewData();
+    }
+
+    // ─── Sidebar Navigation ─────────────────────
+    document.querySelectorAll('[data-section]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        document.querySelectorAll('[data-section]').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.querySelectorAll('[id^="section-"]').forEach(s => s.classList.add('hidden'));
+        document.getElementById(`section-${section}`)?.classList.remove('hidden');
+
+        if (section === 'overview') loadOverviewData();
+        if (section === 'products') loadProductsSection();
+        if (section === 'orders') loadOrdersSection();
+        if (section === 'translations') renderTranslationFields('en');
+      });
+    });
+
+    // ─── Overview ───────────────────────────────
+    async function loadOverviewData() {
+      try {
+        // Stats
+        const stats = await fetchDashboardStats();
+        document.getElementById('stat-revenue').textContent = stats.revenue.toLocaleString();
+        document.getElementById('stat-orders').textContent = stats.totalOrders;
+        document.getElementById('stat-products').textContent = stats.totalProducts;
+
+        // Recent orders (top 5)
+        const orders = await fetchOrders();
+        const recent = orders.slice(0, 5);
+
+        if (recent.length === 0) {
+          document.getElementById('recent-orders-table').innerHTML = `
+            <div class="text-center py-12 text-forest/40 text-sm">No orders yet</div>`;
+          return;
+        }
+
+        document.getElementById('recent-orders-table').innerHTML = `
+          <table class="w-full text-sm">
+            <thead class="text-left text-forest/40 text-xs tracking-wider uppercase">
+              <tr>
+                <th class="px-6 py-3">Order</th>
+                <th class="px-6 py-3">Customer</th>
+                <th class="px-6 py-3">Products</th>
+                <th class="px-6 py-3">Amount</th>
+                <th class="px-6 py-3">Date</th>
+                <th class="px-6 py-3">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${recent.map(o => renderOrderRow(o)).join('')}
+            </tbody>
+          </table>`;
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+      }
+    }
+
+    // ─── Products Section ───────────────────────
+    async function loadProductsSection() {
+      const container = document.getElementById('products-grid');
+      container.innerHTML = '<div class="flex items-center justify-center py-12 col-span-3"><span class="loading-spinner"></span><span class="text-forest/40 text-sm ml-3">Loading...</span></div>';
+
+      try {
+        const products = await fetchProducts();
+        if (!products || products.length === 0) {
+          container.innerHTML = '<div class="text-center py-12 text-forest/40 text-sm col-span-3">No products found in Supabase</div>';
+          return;
+        }
+
+        container.innerHTML = products.map(p => {
+          const price = Number(p.price) || 0;
+          const promo = p.promotion ? Number(p.promotion) : null;
+          return `
+            <div class="bg-white rounded-2xl p-6 border border-forest/[0.06]">
+              ${p.image ? `<img src="${p.image}" alt="${p.name}" class="w-full h-40 object-cover rounded-xl mb-4">` : ''}
+              <h3 class="font-semibold mb-1">${p.name || 'Unnamed'}</h3>
+              <p class="text-forest/40 text-xs mb-2 line-clamp-2">${p.description || ''}</p>
+              <div class="flex items-center justify-between mt-4">
+                <div>
+                  <span class="text-xl font-semibold">${price.toLocaleString()}</span>
+                  <span class="text-forest/40 text-xs ml-1">DZD</span>
+                </div>
+                ${promo ? `<span class="bg-amber-50 text-amber-600 text-xs px-3 py-1 rounded-full">-${promo}%</span>` : '<span class="bg-emerald-50 text-emerald-600 text-xs px-3 py-1 rounded-full">Active</span>'}
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div class="text-center py-12 text-red-500 text-sm col-span-3">Error loading products: ${err.message}</div>`;
+      }
+    }
+
+    // ─── Orders Section ─────────────────────────
+    async function loadOrdersSection() {
+      const container = document.getElementById('orders-table-container');
+      container.innerHTML = '<div class="flex items-center justify-center py-12"><span class="loading-spinner"></span><span class="text-forest/40 text-sm ml-3">Loading...</span></div>';
+
+      try {
+        const orders = await fetchOrders();
+        if (orders.length === 0) {
+          container.innerHTML = '<div class="text-center py-12 text-forest/40 text-sm">No orders found</div>';
+          return;
+        }
+
+        container.innerHTML = `
+          <table class="w-full text-sm">
+            <thead class="text-left text-forest/40 text-xs tracking-wider uppercase bg-bone">
+              <tr>
+                <th class="px-6 py-4">Order</th>
+                <th class="px-6 py-4">Date</th>
+                <th class="px-6 py-4">Customer</th>
+                <th class="px-6 py-4">Address</th>
+                <th class="px-6 py-4">Products</th>
+                <th class="px-6 py-4">Total</th>
+                <th class="px-6 py-4">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orders.map(o => renderFullOrderRow(o)).join('')}
+            </tbody>
+          </table>`;
+      } catch (err) {
+        container.innerHTML = `<div class="text-center py-12 text-red-500 text-sm">Error: ${err.message}</div>`;
+      }
+    }
+
+    // ─── Render Helpers ─────────────────────────
+    function renderOrderRow(order) {
+      const items = order.order_items || [];
+      const total = items.reduce((s, i) => s + (i.price * i.quantity), 0);
+      const productNames = items.map(i => `${i.products?.name || 'Product'} ×${i.quantity}`).join(', ');
+      const date = order.created_at ? new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+      const statusClass = `status-${order.status || 'pending'}`;
+
+      return `<tr class="table-row">
+        <td class="px-6 py-4 font-medium">#${order.id}</td>
+        <td class="px-6 py-4">${order.customer_name || '—'}</td>
+        <td class="px-6 py-4 text-forest/60 text-xs max-w-[200px] truncate">${productNames || '—'}</td>
+        <td class="px-6 py-4 font-medium">${total.toLocaleString()} DZD</td>
+        <td class="px-6 py-4 text-forest/50 text-xs">${date}</td>
+        <td class="px-6 py-4">
+          <div class="relative inline-block">
+            <span class="status-badge ${statusClass}" onclick="toggleStatusDropdown(this)">${order.status || 'pending'}</span>
+            <div class="status-dropdown">
+              <button onclick="changeStatus(${order.id}, 'pending', this)">🟡 Pending</button>
+              <button onclick="changeStatus(${order.id}, 'confirmed', this)">🔵 Confirmed</button>
+              <button onclick="changeStatus(${order.id}, 'shipped', this)">📦 Shipped</button>
+              <button onclick="changeStatus(${order.id}, 'delivered', this)">✅ Delivered</button>
+              <button onclick="changeStatus(${order.id}, 'cancelled', this)">❌ Cancelled</button>
+            </div>
+          </div>
+        </td>
+      </tr>`;
+    }
+
+    function renderFullOrderRow(order) {
+      const items = order.order_items || [];
+      const total = items.reduce((s, i) => s + (i.price * i.quantity), 0);
+      const productNames = items.map(i => `${i.products?.name || 'Product'} ×${i.quantity}`).join(', ');
+      const date = order.created_at ? new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+      const statusClass = `status-${order.status || 'pending'}`;
+
+      return `<tr class="table-row">
+        <td class="px-6 py-4 font-medium">#${order.id}</td>
+        <td class="px-6 py-4 text-forest/50 text-xs">${date}</td>
+        <td class="px-6 py-4">
+          <p class="font-medium text-sm">${order.customer_name || '—'}</p>
+          <p class="text-forest/40 text-xs">${order.customer_phone || ''}</p>
+        </td>
+        <td class="px-6 py-4 text-forest/50 text-xs max-w-[200px]">${order.customer_address || '—'}</td>
+        <td class="px-6 py-4 text-xs">${productNames || '—'}</td>
+        <td class="px-6 py-4 font-medium">${total.toLocaleString()} DZD</td>
+        <td class="px-6 py-4">
+          <div class="relative inline-block">
+            <span class="status-badge ${statusClass}" onclick="toggleStatusDropdown(this)">${order.status || 'pending'}</span>
+            <div class="status-dropdown">
+              <button onclick="changeStatus(${order.id}, 'pending', this)">🟡 Pending</button>
+              <button onclick="changeStatus(${order.id}, 'confirmed', this)">🔵 Confirmed</button>
+              <button onclick="changeStatus(${order.id}, 'shipped', this)">📦 Shipped</button>
+              <button onclick="changeStatus(${order.id}, 'delivered', this)">✅ Delivered</button>
+              <button onclick="changeStatus(${order.id}, 'cancelled', this)">❌ Cancelled</button>
+            </div>
+          </div>
+        </td>
+      </tr>`;
+    }
+
+    // ─── Status Management ──────────────────────
+    function toggleStatusDropdown(badge) {
+      // Close all other dropdowns
+      document.querySelectorAll('.status-dropdown').forEach(d => d.classList.remove('open'));
+      const dropdown = badge.nextElementSibling;
+      dropdown.classList.toggle('open');
+
+      // Close on outside click
+      setTimeout(() => {
+        document.addEventListener('click', function closeDropdown(e) {
+          if (!badge.parentElement.contains(e.target)) {
+            dropdown.classList.remove('open');
+            document.removeEventListener('click', closeDropdown);
+          }
+        });
+      }, 10);
+    }
+
+    async function changeStatus(orderId, newStatus, btn) {
+      const dropdown = btn.closest('.status-dropdown');
+      const badge = dropdown.previousElementSibling;
+
+      badge.innerHTML = '<span class="loading-spinner" style="width:12px;height:12px;border-width:1.5px"></span>';
+      dropdown.classList.remove('open');
+
+      const ok = await updateOrderStatus(orderId, newStatus);
+      if (ok) {
+        badge.textContent = newStatus;
+        badge.className = `status-badge status-${newStatus}`;
+      } else {
+        badge.textContent = 'Error';
+        setTimeout(() => location.reload(), 1000);
+      }
+    }
+
+    // ─── Translations ───────────────────────────
+    const editableKeys = [
+      'hero.tagline', 'hero.tagline2', 'hero.subtitle', 'hero.cta',
+      'products.section', 'products.subtitle',
+      'product.cream.name', 'product.cream.desc',
+      'product.oil.name', 'product.oil.desc',
+      'product.serum.name', 'product.serum.desc',
+      'split.quote', 'split.author',
+      'review.1.text', 'review.2.text', 'review.3.text',
+    ];
+
+    let editLang = 'en';
+    const localTranslations = JSON.parse(localStorage.getItem('chlorice-translations') || 'null');
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        editLang = btn.dataset.tlang;
+        renderTranslationFields(editLang);
+      });
+    });
+
+    function renderTranslationFields(lang) {
+      const container = document.getElementById('translation-fields');
+      const data = localTranslations?.[lang] || {};
+      container.innerHTML = editableKeys.map(key => `
+        <div class="bg-white rounded-xl p-5 border border-forest/[0.06]">
+          <label class="text-xs font-semibold tracking-wider uppercase text-gold block mb-2">${key}</label>
+          <textarea class="w-full bg-bone border border-forest/10 rounded-lg px-4 py-3 text-sm leading-relaxed focus:outline-none focus:border-gold transition-all" rows="2" data-key="${key}" ${lang === 'ar' ? 'dir="rtl" style="font-family:IBM Plex Sans Arabic,sans-serif"' : ''}>${data[key] || key}</textarea>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('save-translations')?.addEventListener('click', () => {
+      const saved = JSON.parse(localStorage.getItem('chlorice-translations') || '{}');
+      if (!saved[editLang]) saved[editLang] = {};
+      document.querySelectorAll('#translation-fields textarea').forEach(ta => {
+        saved[editLang][ta.dataset.key] = ta.value;
+      });
+      localStorage.setItem('chlorice-translations', JSON.stringify(saved));
+      alert('Translations saved for ' + editLang.toUpperCase() + '!');
+    });
+  </script>
+</body>
+</html>

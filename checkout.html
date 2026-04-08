@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Chlorice Skincare</title>
+  <meta name="description" content="Complete your Chlorice skincare order.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { bone:'#FDFCF0', forest:'#1A2421', gold:'#D4A373', 'gold-light':'#E8C9A0' },
+        fontFamily: { playfair:['Playfair Display','serif'], poppins:['Poppins','sans-serif'] }
+      }}
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-bone text-forest font-poppins">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
+    <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
+      <a href="index.html" class="flex items-center gap-3 no-underline">
+        <span class="text-2xl">🌿</span>
+        <span class="font-playfair font-heading text-xl font-semibold tracking-wide text-forest">Chlorice</span>
+      </a>
+      <div class="nav-links hidden md:flex items-center gap-10">
+        <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
+        <a href="products.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.collection">Collection</a>
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="fr">FR</button>
+          <button class="lang-btn" data-lang="ar">AR</button>
+        </div>
+        <button id="cart-icon" class="relative" style="background:none;border:none;cursor:pointer;padding:4px">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center" style="display:none">0</span>
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CHECKOUT -->
+  <section class="pt-32 pb-32">
+    <div class="max-w-5xl mx-auto px-6 lg:px-12">
+      <div class="text-center mb-16 reveal">
+        <p class="section-label">CHLORICE SKINCARE</p>
+        <h1 class="text-4xl md:text-5xl font-heading font-playfair mt-4" data-i18n="checkout.title">Checkout</h1>
+        <p class="text-forest/50 mt-4" data-i18n="checkout.subtitle">Complete your order details below.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-16">
+
+        <!-- ORDER SUMMARY (Left) -->
+        <div class="lg:col-span-2 reveal">
+          <h3 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-8" data-i18n="checkout.summary">Order Summary</h3>
+          <div id="checkout-items"></div>
+          <div class="mt-6 pt-6 flex justify-between items-center" style="border-top:.5px solid rgba(26,36,33,.15)">
+            <span class="font-semibold" data-i18n="cart.total">Total</span>
+            <span class="text-2xl font-semibold text-gold" id="checkout-total">0 DZD</span>
+          </div>
+        </div>
+
+        <!-- FORM (Right) -->
+        <div class="lg:col-span-3 reveal">
+          <form id="checkout-form" class="space-y-6" novalidate>
+
+            <!-- Name -->
+            <div>
+              <label class="block text-xs font-semibold tracking-[1px] uppercase text-forest/50 mb-3" data-i18n="checkout.name">Full Name</label>
+              <input type="text" id="input-name" class="checkout-input" placeholder="Amina Benali" required>
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label class="block text-xs font-semibold tracking-[1px] uppercase text-forest/50 mb-3" data-i18n="checkout.phone">Phone Number</label>
+              <input type="tel" id="input-phone" class="checkout-input" placeholder="0555 12 34 56" required>
+            </div>
+
+            <!-- Wilaya -->
+            <div>
+              <label class="block text-xs font-semibold tracking-[1px] uppercase text-forest/50 mb-3" data-i18n="checkout.wilaya">Select Wilaya</label>
+              <select id="input-wilaya" class="checkout-input checkout-select" required>
+                <option value="" disabled selected>—</option>
+                <option value="01">01 - Adrar</option>
+                <option value="02">02 - Chlef</option>
+                <option value="03">03 - Laghouat</option>
+                <option value="04">04 - Oum El Bouaghi</option>
+                <option value="05">05 - Batna</option>
+                <option value="06">06 - Béjaïa</option>
+                <option value="07">07 - Biskra</option>
+                <option value="08">08 - Béchar</option>
+                <option value="09">09 - Blida</option>
+                <option value="10">10 - Bouira</option>
+                <option value="11">11 - Tamanrasset</option>
+                <option value="12">12 - Tébessa</option>
+                <option value="13">13 - Tlemcen</option>
+                <option value="14">14 - Tiaret</option>
+                <option value="15">15 - Tizi Ouzou</option>
+                <option value="16">16 - Algiers</option>
+                <option value="17">17 - Djelfa</option>
+                <option value="18">18 - Jijel</option>
+                <option value="19">19 - Sétif</option>
+                <option value="20">20 - Saïda</option>
+                <option value="21">21 - Skikda</option>
+                <option value="22">22 - Sidi Bel Abbès</option>
+                <option value="23">23 - Annaba</option>
+                <option value="24">24 - Guelma</option>
+                <option value="25">25 - Constantine</option>
+                <option value="26">26 - Médéa</option>
+                <option value="27">27 - Mostaganem</option>
+                <option value="28">28 - M'Sila</option>
+                <option value="29">29 - Mascara</option>
+                <option value="30">30 - Ouargla</option>
+                <option value="31">31 - Oran</option>
+                <option value="32">32 - El Bayadh</option>
+                <option value="33">33 - Illizi</option>
+                <option value="34">34 - Bordj Bou Arréridj</option>
+                <option value="35">35 - Boumerdès</option>
+                <option value="36">36 - El Tarf</option>
+                <option value="37">37 - Tindouf</option>
+                <option value="38">38 - Tissemsilt</option>
+                <option value="39">39 - El Oued</option>
+                <option value="40">40 - Khenchela</option>
+                <option value="41">41 - Souk Ahras</option>
+                <option value="42">42 - Tipaza</option>
+                <option value="43">43 - Mila</option>
+                <option value="44">44 - Aïn Defla</option>
+                <option value="45">45 - Naâma</option>
+                <option value="46">46 - Aïn Témouchent</option>
+                <option value="47">47 - Ghardaïa</option>
+                <option value="48">48 - Relizane</option>
+                <option value="49">49 - El M'Ghair</option>
+                <option value="50">50 - El Meniaa</option>
+                <option value="51">51 - Ouled Djellal</option>
+                <option value="52">52 - Bordj Badji Mokhtar</option>
+                <option value="53">53 - Béni Abbès</option>
+                <option value="54">54 - Timimoun</option>
+                <option value="55">55 - Touggourt</option>
+                <option value="56">56 - Djanet</option>
+                <option value="57">57 - In Salah</option>
+                <option value="58">58 - In Guezzam</option>
+              </select>
+            </div>
+
+            <!-- Address -->
+            <div>
+              <label class="block text-xs font-semibold tracking-[1px] uppercase text-forest/50 mb-3" data-i18n="checkout.address">Address / Delivery Notes</label>
+              <textarea id="input-address" class="checkout-input" rows="3" placeholder="Rue, quartier, point de repère..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-primary" style="width:100%;display:flex;justify-content:center" data-i18n="checkout.submit">
+              Place Order
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SUCCESS OVERLAY (hidden) -->
+  <div id="success-overlay" class="success-overlay" style="display:none">
+    <div class="max-w-md px-8">
+      <div class="w-20 h-20 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-8">
+        <svg width="40" height="40" fill="none" stroke="#D4A373" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="font-heading font-playfair text-4xl mb-4" data-i18n="checkout.success">Order Placed Successfully!</h2>
+      <p class="text-forest/60 mb-10 leading-relaxed" data-i18n="checkout.successMsg">Thank you for your order. We will contact you shortly to confirm delivery.</p>
+      <a href="index.html" class="btn-primary" style="display:inline-flex" data-i18n="checkout.backHome">Back to Home</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="hairline-top bg-forest text-bone/80" style="padding: 80px 0 40px;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-6"><span class="text-2xl">🌿</span><span class="font-heading font-playfair text-2xl text-bone">Chlorice</span></div>
+          <p class="text-bone/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation</h4>
+          <div class="flex flex-col gap-3">
+            <a href="index.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
+            <a href="products.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.legal">Legal</h4>
+          <div class="flex flex-col gap-3">
+            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-bone/10 pt-8 text-center">
+        <p class="text-bone/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/translations.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    /* ── Checkout Page Logic — Supabase Integrated ── */
+    document.addEventListener('DOMContentLoaded', async () => {
+      const items = JSON.parse(localStorage.getItem('chlorice-cart') || '[]');
+      const lang = localStorage.getItem('chlorice-lang') || 'en';
+
+      // Fetch products from Supabase for price + name mapping
+      let supaProducts = [];
+      try {
+        supaProducts = await fetchProducts() || [];
+      } catch(e) { console.warn('Could not fetch products from Supabase, using fallback'); }
+
+      // Build price map: local ID => { dbId, price, name }
+      const priceMap = {};
+      const fallbackPrices = { cream: 3500, oil: 2800, serum: 4200 };
+
+      if (supaProducts.length > 0) {
+        supaProducts.forEach(p => {
+          // Match by name pattern (case-insensitive partial match)
+          const lowerName = (p.name || '').toLowerCase();
+          if (lowerName.includes('cream') || lowerName.includes('brightening')) {
+            priceMap['cream'] = { dbId: p.id, price: Number(p.price) || 3500, name: p.name };
+          } else if (lowerName.includes('oil') || lowerName.includes('hair')) {
+            priceMap['oil'] = { dbId: p.id, price: Number(p.price) || 2800, name: p.name };
+          } else if (lowerName.includes('serum') || lowerName.includes('rose')) {
+            priceMap['serum'] = { dbId: p.id, price: Number(p.price) || 4200, name: p.name };
+          }
+        });
+      }
+
+      // Fallback for any missing mappings
+      ['cream', 'oil', 'serum'].forEach(k => {
+        if (!priceMap[k]) priceMap[k] = { dbId: null, price: fallbackPrices[k], name: k };
+      });
+
+      // Render order summary
+      const container = document.getElementById('checkout-items');
+      if (!container) return;
+
+      if (items.length === 0) {
+        container.innerHTML = '<p class="text-forest/40 text-center py-8">No items in cart.</p>';
+        document.getElementById('checkout-form').style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = items.map(item => {
+        const pm = priceMap[item.id] || { price: fallbackPrices[item.id] || 0, name: item.id };
+        const name = (translations[lang] && translations[lang][`product.${item.id}.name`]) || pm.name;
+        const price = pm.price * item.qty;
+        const img = productData[item.id]?.img || '';
+        total += price;
+        return `<div class="order-summary-item">
+          <img src="${img}" alt="" class="w-16 h-16 rounded-xl object-cover shrink-0">
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-sm">${name}</p>
+            <p class="text-forest/50 text-xs mt-1">x${item.qty}</p>
+          </div>
+          <p class="font-semibold text-sm text-gold shrink-0">${price.toLocaleString()} DZD</p>
+        </div>`;
+      }).join('');
+
+      document.getElementById('checkout-total').textContent = `${total.toLocaleString()} DZD`;
+
+      // Form submit → Supabase
+      document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('input-name').value.trim();
+        const phone = document.getElementById('input-phone').value.trim();
+        const wilaya = document.getElementById('input-wilaya').value;
+        const address = document.getElementById('input-address').value.trim();
+
+        if (!name || !phone || !wilaya) {
+          [document.getElementById('input-name'), document.getElementById('input-phone'), document.getElementById('input-wilaya')].forEach(el => {
+            if (!el.value.trim()) {
+              el.style.borderColor = '#e53e3e';
+              setTimeout(() => el.style.borderColor = '', 2000);
+            }
+          });
+          return;
+        }
+
+        // Build full address with wilaya
+        const wilayaText = document.getElementById('input-wilaya').selectedOptions[0]?.text || wilaya;
+        const fullAddress = `${wilayaText}${address ? ' — ' + address : ''}`;
+
+        // Disable submit button
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = '...'; }
+
+        // Build cart items with Supabase product IDs
+        const cartItems = items.map(item => {
+          const pm = priceMap[item.id] || {};
+          return {
+            product_id: pm.dbId || 1,
+            qty: item.qty,
+            price: pm.price || fallbackPrices[item.id] || 0
+          };
+        });
+
+        // Insert order into Supabase
+        try {
+          const order = await createOrder(name, phone, fullAddress, cartItems);
+          if (order) {
+            console.log('✅ Order created in Supabase:', order);
+          } else {
+            console.warn('⚠️ Order may not have been saved to Supabase');
+          }
+        } catch (err) {
+          console.error('Supabase order error:', err);
+        }
+
+        // Clear cart and show success regardless
+        localStorage.removeItem('chlorice-cart');
+        Cart.items = [];
+        Cart.updateBadge();
+
+        document.getElementById('success-overlay').style.display = 'flex';
+        document.querySelector('section').style.display = 'none';
+        document.querySelector('footer').style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>
