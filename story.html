@@ -13,7 +13,7 @@
   <script>
     tailwind.config = {
       theme: { extend: {
-        colors: { bone:'#FDFCF0', forest:'#1A2421', gold:'#D4A373', 'gold-light':'#E8C9A0' },
+        colors: { bone:'#FDFBF7', forest:'#4A5568', gold:'#E5D5C0', 'gold-light':'#F2E9DE' },
         fontFamily: { playfair:['Playfair Display','serif'], poppins:['Poppins','sans-serif'] }
       }}
     }
@@ -177,8 +177,9 @@
     .tagline-section {
       text-align: center;
       padding: 100px 24px;
-      background: var(--forest);
-      color: var(--bone);
+      background: var(--white);
+      color: var(--forest);
+      border-top: var(--hairline);
     }
     .tagline-text {
       font-family: 'Playfair Display', serif;
@@ -240,7 +241,7 @@
   <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
     <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
       <a href="index.html" class="flex items-center gap-3 no-underline">
-        <img src="image/logo.png" alt="Chlorice Skincare" class="h-10 w-auto" style="mix-blend-mode:multiply;">
+        <img src="image/logo_transparent.png" alt="Chlorice Skincare" class="h-10 w-auto">
       </a>
       <div class="nav-links hidden md:flex items-center gap-10">
         <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
@@ -375,39 +376,39 @@
     <div class="max-w-4xl mx-auto reveal">
       <span class="tagline-leaf">🌿</span>
       <p class="tagline-text" data-i18n="story.tagline">"From the heart of the Sahara — with science, with soul, with love."</p>
-      <p class="text-bone/40 mt-6 text-sm tracking-widest uppercase" data-i18n="story.tagline.sub">Chlorice Skincare — Béchar, Algeria</p>
+      <p class="text-forest/40 mt-6 text-sm tracking-widest uppercase" data-i18n="story.tagline.sub">Chlorice Skincare — Béchar, Algeria</p>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="hairline-top bg-forest text-bone/80" style="padding: 80px 0 40px;">
+  <footer class="hairline-top text-forest/80" style="padding: 80px 0 40px; background-color: var(--footer-bg);">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
         <div class="md:col-span-2">
-          <div class="flex items-center gap-3 mb-6"><img src="image/logo.png" alt="Chlorice" class="h-10 w-auto" style="filter:brightness(10);"></div>
-          <p class="text-bone/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
+          <div class="flex items-center gap-3 mb-6"><img src="image/logo_transparent.png" alt="Chlorice" class="h-10 w-auto"></div>
+          <p class="text-forest/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
         </div>
         <div>
           <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation</h4>
           <div class="flex flex-col gap-3">
-            <a href="index.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
-            <a href="products.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
-            <a href="story.html" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="nav.story">Our Story</a>
+            <a href="index.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
+            <a href="products.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
+            <a href="story.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.story">Our Story</a>
           </div>
         </div>
         <div>
           <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.legal">Legal</h4>
           <div class="flex flex-col gap-3">
-            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
-            <a href="#" class="text-bone/50 hover:text-bone transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
           </div>
         </div>
       </div>
-      <div class="border-t border-bone/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-bone/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
+      <div class="border-t border-forest/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-forest/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
         <div class="flex items-center gap-6">
-          <a href="#" class="text-bone/30 hover:text-gold transition-all text-xs no-underline">Instagram</a>
-          <a href="#" class="text-bone/30 hover:text-gold transition-all text-xs no-underline">Email</a>
+          <a href="#" class="text-forest/30 hover:text-gold transition-all text-xs no-underline">Instagram</a>
+          <a href="#" class="text-forest/30 hover:text-gold transition-all text-xs no-underline">Email</a>
         </div>
       </div>
     </div>
