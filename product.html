@@ -1,71 +1,126 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details | Chlorice Skincare</title>
   <meta name="description" content="Discover the details, ingredients, and ritual for this Chlorice product.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸŒ¿</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: {
-        colors: { bone:'#FDFBF7', forest:'#4A5568', gold:'#E5D5C0', 'gold-light':'#F2E9DE' },
-        fontFamily: { playfair:['Playfair Display','serif'], poppins:['Poppins','sans-serif'] }
-      }}
+      theme: {
+        extend: {
+          colors: { bone: '#FAF7F2', forest: '#2C3340', gold: '#C8A978', 'gold-light': '#EDE5D8', 'gold-dark': '#A8895C', 'forest-muted': '#6B7280' },
+          fontFamily: { playfair: ['Playfair Display', 'serif'], poppins: ['Poppins', 'sans-serif'] }
+        }
+      }
     }
   </script>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .detail-tab { transition: all .4s cubic-bezier(.16,1,.3,1); }
-    .detail-tab.active { opacity: 1; border-bottom-color: #D4A373; }
-    .detail-tab-content { display: none; }
-    .detail-tab-content.active { display: block; }
+    .detail-tab {
+      transition: all .4s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .detail-tab.active {
+      opacity: 1;
+      border-bottom-color: #D4A373;
+    }
+
+    .detail-tab-content {
+      display: none;
+    }
+
+    .detail-tab-content.active {
+      display: block;
+    }
+
     .detail-image-wrapper {
       position: sticky;
       top: 100px;
     }
   </style>
 </head>
+
 <body class="bg-bone text-forest font-poppins">
 
   <!-- NAVBAR -->
   <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
-    <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
-      <a href="index.html" class="flex items-center gap-3 no-underline">
-        <img src="image/logo_transparent.png" alt="Chlorice Skincare" class="h-10 w-auto">
-      </a>
-      <div class="nav-links hidden md:flex items-center gap-10">
-        <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
-        <a href="products.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.collection">Collection</a>
-        <a href="index.html#reviews" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.reviews">Reviews</a>
+    <div class="max-w-7xl mx-auto h-full nav-container-grid">
+      <!-- Logo Left -->
+      <div class="flex items-center">
+        <a href="index.html" class="flex items-center gap-3 no-underline">
+          <img src="image/logo_transparent.png" alt="Chlorice Skincare" class="h-10 w-auto">
+        </a>
       </div>
-      <div class="flex items-center gap-5">
-        <div class="lang-switcher">
+
+      <!-- Centered Menu -->
+      <div class="nav-links-center hidden md:flex">
+        <a href="index.html" class="nav-link-item" data-i18n="nav.home">Home</a>
+        <a href="story.html" class="nav-link-item" data-i18n="nav.about">About</a>
+        <a href="products.html" class="nav-link-item" data-i18n="nav.products">Products</a>
+        <a href="index.html#hero" class="nav-link-item" data-i18n="nav.services">Services</a>
+        <a href="index.html#reviews" class="nav-link-item" data-i18n="nav.contact">Contact</a>
+      </div>
+
+      <!-- Actions Right -->
+      <div class="flex items-center justify-end gap-5">
+        <div class="nav-socials hidden lg:flex mr-2">
+          <a href="https://instagram.com/chlorice.skincare" class="nav-social-icon" target="_blank" aria-label="Instagram">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://facebook.com/chlorice.skincare" class="nav-social-icon" target="_blank" aria-label="Facebook">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="lang-switcher hidden sm:flex">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="fr">FR</button>
           <button class="lang-btn" data-lang="ar">AR</button>
         </div>
+
+        <a href="products.html" class="nav-cta-btn hidden xl:block" data-i18n="nav.shopNow">Shop Now</a>
+
         <button id="cart-icon" class="relative" style="background:none;border:none;cursor:pointer;padding:4px">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
-          <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center" style="display:none">0</span>
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span id="cart-badge"
+            class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center"
+            style="display:none">0</span>
         </button>
         <button class="mobile-menu-btn" id="mobile-menu-btn"><span></span><span></span><span></span></button>
       </div>
     </div>
-    <div id="mobile-nav" class="nav-links-mobile">
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="nav-links-mobile text-center">
       <a href="index.html" class="text-sm font-medium" data-i18n="nav.home">Home</a>
-      <a href="products.html" class="text-sm font-medium" data-i18n="nav.collection">Collection</a>
-      <a href="index.html#reviews" class="text-sm font-medium" data-i18n="nav.reviews">Reviews</a>
+      <a href="story.html" class="text-sm font-medium" data-i18n="nav.about">About</a>
+      <a href="products.html" class="text-sm font-medium" data-i18n="nav.products">Products</a>
+      <a href="index.html#hero" class="text-sm font-medium" data-i18n="nav.services">Services</a>
+      <a href="index.html#reviews" class="text-sm font-medium" data-i18n="nav.contact">Contact</a>
     </div>
   </nav>
 
   <!-- BACK LINK -->
   <div class="pt-28 pb-6 max-w-7xl mx-auto px-6 lg:px-12">
-    <a href="products.html" class="text-sm text-forest/50 hover:text-forest transition-all no-underline" data-i18n="product.back">← Back to Collection</a>
+    <a href="products.html" class="text-sm text-forest/50 hover:text-forest transition-all no-underline"
+      data-i18n="product.back">&larr; Back to Collection</a>
   </div>
 
   <!-- PRODUCT DETAIL -->
@@ -74,15 +129,18 @@
 
       <!-- Image -->
       <div class="detail-image-wrapper reveal">
-        <div class="rounded-3xl overflow-hidden border border-forest/[0.06]" style="border: 0.5px solid rgba(26,36,33,0.12);">
+        <div class="rounded-3xl overflow-hidden border border-forest/[0.06]"
+          style="border: 0.5px solid rgba(26,36,33,0.12);">
           <img id="detail-img" src="" alt="Product" class="w-full aspect-[3/4] object-cover">
         </div>
       </div>
 
       <!-- Info -->
       <div class="py-4 lg:py-8">
-        <span id="detail-tag" class="text-[10px] font-semibold tracking-[3px] uppercase text-gold reveal">Best Seller</span>
-        <h1 id="detail-name" class="font-heading font-playfair text-4xl md:text-5xl leading-tight mt-4 reveal">Product Name</h1>
+        <span id="detail-tag" class="text-[10px] font-semibold tracking-[3px] uppercase text-gold reveal">Best
+          Seller</span>
+        <h1 id="detail-name" class="font-heading font-playfair text-4xl md:text-5xl leading-tight mt-4 reveal">Product
+          Name</h1>
         <p id="detail-price" class="text-2xl font-semibold text-gold mt-6 reveal">3,500 DZD</p>
 
         <!-- Divider -->
@@ -90,9 +148,15 @@
 
         <!-- Tabs -->
         <div class="flex gap-0 border-b reveal" style="border-color: rgba(26,36,33,0.12);">
-          <button class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer active" data-tab="description" data-i18n="tab.description">Description</button>
-          <button class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer" data-tab="ingredients" data-i18n="tab.ingredients">Ingredients</button>
-          <button class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer" data-tab="ritual" data-i18n="tab.ritual">The Ritual</button>
+          <button
+            class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer active"
+            data-tab="description" data-i18n="tab.description">Description</button>
+          <button
+            class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer"
+            data-tab="ingredients" data-i18n="tab.ingredients">Ingredients</button>
+          <button
+            class="detail-tab flex-1 py-4 text-sm font-medium text-center opacity-40 border-b-2 border-transparent bg-transparent cursor-pointer"
+            data-tab="ritual" data-i18n="tab.ritual">The Ritual</button>
         </div>
 
         <!-- Tab Contents -->
@@ -110,7 +174,8 @@
         <div class="flex flex-wrap gap-3 mt-6 reveal">
           <span class="px-4 py-2 rounded-full text-xs font-medium bg-forest/5 text-forest/60">🌿 Vegan</span>
           <span class="px-4 py-2 rounded-full text-xs font-medium bg-forest/5 text-forest/60">🧪 Dermatologist Tested</span>
-          <span class="px-4 py-2 rounded-full text-xs font-medium bg-forest/5 text-forest/60">🇩🇿 Made in Algeria</span>
+          <span class="px-4 py-2 rounded-full text-xs font-medium bg-forest/5 text-forest/60">🇩🇿 Made in
+            Algeria</span>
         </div>
 
         <!-- Add to Cart -->
@@ -126,26 +191,33 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
         <div class="md:col-span-2">
-          <div class="flex items-center gap-3 mb-6"><img src="image/logo_transparent.png" alt="Chlorice" class="h-10 w-auto"></div>
-          <p class="text-forest/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
+          <div class="flex items-center gap-3 mb-6"><img src="image/logo_transparent.png" alt="Chlorice"
+              class="h-10 w-auto"></div>
+          <p class="text-forest/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart
+            of the Sahara.</p>
         </div>
         <div>
-          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation</h4>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation
+          </h4>
           <div class="flex flex-col gap-3">
-            <a href="index.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
-            <a href="products.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
+            <a href="index.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="nav.home">Home</a>
+            <a href="products.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="nav.collection">Collection</a>
           </div>
         </div>
         <div>
           <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.legal">Legal</h4>
           <div class="flex flex-col gap-3">
-            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
-            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="footer.terms">Terms of Service</a>
           </div>
         </div>
       </div>
       <div class="border-t border-forest/10 pt-8 text-center">
-        <p class="text-forest/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
+        <p class="text-forest/30 text-xs" data-i18n="footer.copyright">Â© 2026 Chlorice Skincare. BÃ©char, Algeria.</p>
       </div>
     </div>
   </footer>
@@ -163,7 +235,7 @@
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       const btn = document.getElementById('detail-add-to-cart');
-      
+
       if (btn && id) {
         btn.setAttribute('data-product', id);
       }
@@ -178,4 +250,5 @@
     });
   </script>
 </body>
+
 </html>

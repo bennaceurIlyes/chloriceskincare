@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Story | Chlorice Skincare — From Béchar, With Science</title>
-  <meta name="description" content="Discover the story behind Chlorice Skincare — born from a biology student's dream in Béchar, forged at Blue Hack, and crafted with Saharan botanicals.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <title>Our Story | Chlorice Skincare â€” From BÃ©char, With Science</title>
+  <meta name="description"
+    content="Discover the story behind Chlorice Skincare â€” born from a biology student's dream in BÃ©char, forged at Blue Hack, and crafted with Saharan botanicals.">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðŸŒ¿</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      theme: { extend: {
-        colors: { bone:'#FDFBF7', forest:'#4A5568', gold:'#E5D5C0', 'gold-light':'#F2E9DE' },
-        fontFamily: { playfair:['Playfair Display','serif'], poppins:['Poppins','sans-serif'] }
-      }}
+      theme: {
+        extend: {
+          colors: { bone: '#FAF7F2', forest: '#2C3340', gold: '#C8A978', 'gold-light': '#EDE5D8', 'gold-dark': '#A8895C', 'forest-muted': '#6B7280' },
+          fontFamily: { playfair: ['Playfair Display', 'serif'], poppins: ['Poppins', 'sans-serif'] }
+        }
+      }
     }
   </script>
   <link rel="stylesheet" href="css/style.css">
   <style>
     /* ---- Story Page Specific Styles ---- */
 
-    /* Page Hero — shorter than homepage */
+    /* Page Hero â€” shorter than homepage */
     .story-hero {
       position: relative;
       min-height: 70vh;
@@ -30,6 +37,7 @@
       align-items: center;
       overflow: hidden;
     }
+
     .story-hero-bg {
       position: absolute;
       inset: 0;
@@ -37,17 +45,17 @@
       background-position: center 30%;
       z-index: 0;
     }
+
     .story-hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(253,252,240,0.4) 0%,
-        rgba(253,252,240,0.85) 50%,
-        rgba(253,252,240,1) 100%
-      );
+      background: linear-gradient(180deg,
+          rgba(253, 252, 240, 0.4) 0%,
+          rgba(253, 252, 240, 0.85) 50%,
+          rgba(253, 252, 240, 1) 100%);
       z-index: 1;
     }
+
     .story-hero-content {
       position: relative;
       z-index: 2;
@@ -62,18 +70,24 @@
       min-height: 500px;
       overflow: hidden;
     }
+
     .milestone.reverse {
-      direction: ltr; /* ensure reset for RTL */
+      direction: ltr;
+      /* ensure reset for RTL */
     }
+
     .milestone.reverse .milestone-image {
       order: 2;
     }
+
     .milestone.reverse .milestone-text {
       order: 1;
     }
+
     html[dir="rtl"] .milestone.reverse .milestone-image {
       order: 1;
     }
+
     html[dir="rtl"] .milestone.reverse .milestone-text {
       order: 2;
     }
@@ -82,21 +96,25 @@
       position: relative;
       overflow: hidden;
     }
+
     .milestone-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       transition: transform 0.8s var(--ease-out);
     }
+
     .milestone:hover .milestone-image img {
       transform: scale(1.03);
     }
+
     .milestone-text {
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 60px 70px;
     }
+
     .milestone-year {
       font-family: 'Playfair Display', serif;
       font-size: 48px;
@@ -105,9 +123,11 @@
       line-height: 1;
       margin-bottom: 8px;
     }
+
     html[dir="rtl"] .milestone-year {
       font-family: 'Amiri', serif;
     }
+
     .milestone-tag {
       font-size: 11px;
       font-weight: 600;
@@ -116,6 +136,7 @@
       color: var(--gold);
       margin-bottom: 20px;
     }
+
     .milestone-title {
       font-family: 'Playfair Display', serif;
       font-size: 28px;
@@ -124,9 +145,11 @@
       color: var(--forest);
       margin-bottom: 20px;
     }
+
     html[dir="rtl"] .milestone-title {
       font-family: 'Amiri', serif;
     }
+
     .milestone-body {
       color: rgba(26, 36, 33, 0.6);
       font-size: 15px;
@@ -142,10 +165,12 @@
       transition: var(--transition);
       text-align: center;
     }
+
     .value-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 20px 50px rgba(26, 36, 33, 0.06);
     }
+
     .value-icon {
       width: 56px;
       height: 56px;
@@ -157,6 +182,7 @@
       margin: 0 auto 20px;
       font-size: 24px;
     }
+
     .value-title {
       font-family: 'Playfair Display', serif;
       font-size: 18px;
@@ -164,9 +190,11 @@
       color: var(--forest);
       margin-bottom: 10px;
     }
+
     html[dir="rtl"] .value-title {
       font-family: 'Amiri', serif;
     }
+
     .value-desc {
       color: rgba(26, 36, 33, 0.5);
       font-size: 14px;
@@ -181,6 +209,7 @@
       color: var(--forest);
       border-top: var(--hairline);
     }
+
     .tagline-text {
       font-family: 'Playfair Display', serif;
       font-size: 36px;
@@ -189,9 +218,11 @@
       max-width: 700px;
       margin: 0 auto;
     }
+
     html[dir="rtl"] .tagline-text {
       font-family: 'Amiri', serif;
     }
+
     .tagline-leaf {
       color: var(--gold);
       font-size: 28px;
@@ -204,30 +235,38 @@
       .milestone {
         grid-template-columns: 1fr;
       }
+
       .milestone-image {
         min-height: 350px;
       }
+
       .milestone-text {
         padding: 50px 40px;
       }
+
       .milestone.reverse .milestone-image,
       .milestone.reverse .milestone-text {
         order: unset;
       }
     }
+
     @media (max-width: 768px) {
       .story-hero {
         min-height: 55vh;
       }
+
       .milestone-text {
         padding: 36px 24px;
       }
+
       .milestone-year {
         font-size: 36px;
       }
+
       .milestone-title {
         font-size: 22px;
       }
+
       .tagline-text {
         font-size: 26px;
       }
@@ -235,55 +274,96 @@
   </style>
   <link rel="stylesheet" href="css/style.css?v=2">
 </head>
+
 <body class="bg-bone text-forest font-poppins">
+  <div class="header-overlay"></div>
 
   <!-- NAVBAR -->
   <nav id="navbar" class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 lg:px-12">
-    <div class="max-w-7xl mx-auto flex items-center justify-between h-20">
-      <a href="index.html" class="flex items-center gap-3 no-underline">
-        <img src="image/logo_transparent.png" alt="Chlorice Skincare" class="h-10 w-auto">
-      </a>
-      <div class="nav-links hidden md:flex items-center gap-10">
-        <a href="index.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.home">Home</a>
-        <a href="products.html" class="text-sm font-medium tracking-wide text-forest/60 hover:text-forest transition-all no-underline" data-i18n="nav.collection">Collection</a>
-        <a href="story.html" class="text-sm font-medium tracking-wide text-forest hover:text-forest transition-all no-underline" data-i18n="nav.story">Our Story</a>
+    <div class="max-w-7xl mx-auto h-full nav-container-grid">
+      <!-- Logo Left -->
+      <div class="flex items-center">
+        <a href="index.html" class="flex items-center gap-3 no-underline">
+          <img src="image/logo_transparent.png" alt="Chlorice Skincare" class="h-10 w-auto">
+        </a>
       </div>
-      <div class="flex items-center gap-5">
-        <div class="lang-switcher">
+
+      <!-- Centered Menu -->
+      <div class="nav-links-center hidden md:flex">
+        <a href="index.html" class="nav-link-item" data-i18n="nav.home">Home</a>
+        <a href="story.html" class="nav-link-item" data-i18n="nav.about">About</a>
+        <a href="products.html" class="nav-link-item" data-i18n="nav.products">Products</a>
+        <a href="index.html#hero" class="nav-link-item" data-i18n="nav.services">Services</a>
+        <a href="index.html#reviews" class="nav-link-item" data-i18n="nav.contact">Contact</a>
+      </div>
+
+      <!-- Actions Right -->
+      <div class="flex items-center justify-end gap-5">
+        <div class="nav-socials hidden lg:flex mr-2">
+          <a href="https://instagram.com/chlorice.skincare" class="nav-social-icon" target="_blank" aria-label="Instagram">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="https://facebook.com/chlorice.skincare" class="nav-social-icon" target="_blank" aria-label="Facebook">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" />
+            </svg>
+          </a>
+        </div>
+
+        <div class="lang-switcher hidden sm:flex">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="fr">FR</button>
           <button class="lang-btn" data-lang="ar">AR</button>
         </div>
+
+        <a href="products.html" class="nav-cta-btn hidden xl:block" data-i18n="nav.shopNow">Shop Now</a>
+
         <button id="cart-icon" class="relative" style="background:none;border:none;cursor:pointer;padding:4px">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
-          <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center" style="display:none">0</span>
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span id="cart-badge"
+            class="absolute -top-1 -right-1 w-5 h-5 bg-gold text-bone text-[10px] font-bold rounded-full flex items-center justify-center"
+            style="display:none">0</span>
         </button>
         <button class="mobile-menu-btn" id="mobile-menu-btn"><span></span><span></span><span></span></button>
       </div>
     </div>
-    <div id="mobile-nav" class="nav-links-mobile">
+    <!-- Mobile Nav -->
+    <div id="mobile-nav" class="nav-links-mobile text-center">
       <a href="index.html" class="text-sm font-medium" data-i18n="nav.home">Home</a>
-      <a href="products.html" class="text-sm font-medium" data-i18n="nav.collection">Collection</a>
-      <a href="story.html" class="text-sm font-medium" data-i18n="nav.story">Our Story</a>
+      <a href="story.html" class="text-sm font-medium" data-i18n="nav.about">About</a>
+      <a href="products.html" class="text-sm font-medium" data-i18n="nav.products">Products</a>
+      <a href="index.html#hero" class="text-sm font-medium" data-i18n="nav.services">Services</a>
+      <a href="index.html#reviews" class="text-sm font-medium" data-i18n="nav.contact">Contact</a>
     </div>
   </nav>
 
   <!-- STORY HERO -->
   <section class="story-hero">
-    <div class="story-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=80');"></div>
+    <div class="story-hero-bg"
+      style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=80');"></div>
     <div class="story-hero-overlay"></div>
     <div class="story-hero-content max-w-4xl mx-auto px-6 lg:px-12 pt-32">
       <p class="section-label mb-4 reveal" data-i18n="story.label">OUR STORY</p>
-      <h1 class="text-5xl md:text-6xl lg:text-7xl font-heading font-playfair leading-[1.1] mb-6 reveal" data-i18n="story.heroTitle">Born from the Desert, Shaped by Science</h1>
-      <p class="text-lg md:text-xl text-forest/55 leading-relaxed max-w-2xl mx-auto reveal" data-i18n="story.heroSubtitle">Every Chlorice product carries a piece of Béchar — the warmth of the Saharan sun, the resilience of its botanicals, and the curiosity of a young scientist who dared to dream.</p>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-heading font-playfair leading-[1.1] mb-6 reveal"
+        data-i18n="story.heroTitle">Born from the Desert, Shaped by Science</h1>
+      <p class="text-lg md:text-xl text-forest/55 leading-relaxed max-w-2xl mx-auto reveal"
+        data-i18n="story.heroSubtitle">Every Chlorice product carries a piece of BÃ©char â€” the warmth of the Saharan sun,
+        the resilience of its botanicals, and the curiosity of a young scientist who dared to dream.</p>
     </div>
   </section>
 
-  <!-- MILESTONE 1 — THE BEGINNING -->
+  <!-- MILESTONE 1 â€” THE BEGINNING -->
   <section class="milestone hairline-top">
     <div class="milestone-image reveal">
-      <!-- 📷 Image: The founder's university / startup phase -->
-      <img src="image/enterpernaryweekin unversity.png" alt="Chlorice at Entrepreneurship Week at the University" loading="lazy">
+      <!-- ðŸ“· Image: The founder's university / startup phase -->
+      <img src="image/enterpernaryweekin unversity.png" alt="Chlorice at Entrepreneurship Week at the University"
+        loading="lazy">
     </div>
     <div class="milestone-text">
       <div class="reveal">
@@ -291,14 +371,18 @@
         <span class="milestone-year">2023</span>
       </div>
       <h2 class="milestone-title reveal" data-i18n="story.m1.title">A Seed Planted in a University Lab</h2>
-      <p class="milestone-body reveal" data-i18n="story.m1.body">It started with a question only a biology student would ask: <em>"What if the plants growing in our backyard hold the key to radiant skin?"</em> In the quiet labs of Béchar's university, between microscopes and desert botanicals, the idea for Chlorice was born — not as a business, but as a passion project. A curious mind, a love for science, and a deep connection to the land of the Sahara planted a seed that would soon blossom into something extraordinary.</p>
+      <p class="milestone-body reveal" data-i18n="story.m1.body">It started with a question only a biology student would
+        ask: <em>"What if the plants growing in our backyard hold the key to radiant skin?"</em> In the quiet labs of
+        BÃ©char's university, between microscopes and desert botanicals, the idea for Chlorice was born â€” not as a
+        business, but as a passion project. A curious mind, a love for science, and a deep connection to the land of the
+        Sahara planted a seed that would soon blossom into something extraordinary.</p>
     </div>
   </section>
 
-  <!-- MILESTONE 2 — BLUE HACK -->
+  <!-- MILESTONE 2 â€” BLUE HACK -->
   <section class="milestone reverse hairline-top">
     <div class="milestone-image reveal">
-      <!-- 📷 Image: Blue Hack event participation -->
+      <!-- ðŸ“· Image: Blue Hack event participation -->
       <img src="image/bluehack.png" alt="Chlorice at the Blue Hack Event" loading="lazy">
     </div>
     <div class="milestone-text">
@@ -307,15 +391,20 @@
         <span class="milestone-year">2024</span>
       </div>
       <h2 class="milestone-title reveal" data-i18n="story.m2.title">From the Lab to the Stage: Blue Hack</h2>
-      <p class="milestone-body reveal" data-i18n="story.m2.body">What began as a university dream took its first bold step into the world at Blue Hack — a national hackathon dedicated to innovative women in the blue economy. Surrounded by visionaries and mentors, the founder pitched Chlorice's vision: skincare that honors tradition, respects nature, and is backed by real science. The experience was transformative — earning recognition, building confidence, and proving that a girl from Béchar could compete on any stage.</p>
+      <p class="milestone-body reveal" data-i18n="story.m2.body">What began as a university dream took its first bold
+        step into the world at Blue Hack â€” a national hackathon dedicated to innovative women in the blue economy.
+        Surrounded by visionaries and mentors, the founder pitched Chlorice's vision: skincare that honors tradition,
+        respects nature, and is backed by real science. The experience was transformative â€” earning recognition,
+        building confidence, and proving that a girl from BÃ©char could compete on any stage.</p>
     </div>
   </section>
 
-  <!-- MILESTONE 3 — TRADITIONAL CRAFTS EXHIBITION -->
+  <!-- MILESTONE 3 â€” TRADITIONAL CRAFTS EXHIBITION -->
   <section class="milestone hairline-top">
     <div class="milestone-image reveal">
-      <!-- 📷 Image: Traditional Crafts Exhibition -->
-      <img src="image/Traditional Crafts Exhibition.png" alt="Chlorice at the Traditional Crafts Exhibition" loading="lazy">
+      <!-- ðŸ“· Image: Traditional Crafts Exhibition -->
+      <img src="image/Traditional Crafts Exhibition.png" alt="Chlorice at the Traditional Crafts Exhibition"
+        loading="lazy">
     </div>
     <div class="milestone-text">
       <div class="reveal">
@@ -323,7 +412,11 @@
         <span class="milestone-year">2025</span>
       </div>
       <h2 class="milestone-title reveal" data-i18n="story.m3.title">Showcased at the Traditional Crafts Exhibition</h2>
-      <p class="milestone-body reveal" data-i18n="story.m3.body">Chlorice earned its place among Algeria's finest artisanal brands at the Traditional Crafts Exhibition. For the first time, customers could touch, smell, and experience the products — and the response was overwhelming. It was more than a booth; it was a conversation between heritage and innovation. Visitors connected with the story, the ingredients, and the heart behind every jar. This was the moment Chlorice went from an idea to a brand people believed in.</p>
+      <p class="milestone-body reveal" data-i18n="story.m3.body">Chlorice earned its place among Algeria's finest
+        artisanal brands at the Traditional Crafts Exhibition. For the first time, customers could touch, smell, and
+        experience the products â€” and the response was overwhelming. It was more than a booth; it was a conversation
+        between heritage and innovation. Visitors connected with the story, the ingredients, and the heart behind every
+        jar. This was the moment Chlorice went from an idea to a brand people believed in.</p>
     </div>
   </section>
 
@@ -332,41 +425,51 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="text-center mb-20 reveal">
         <p class="section-label" data-i18n="story.values.label">WHAT WE STAND FOR</p>
-        <h2 class="text-4xl md:text-5xl font-heading font-playfair mt-4" data-i18n="story.values.title">Our Core Values</h2>
+        <h2 class="text-4xl md:text-5xl font-heading font-playfair mt-4" data-i18n="story.values.title">Our Core Values
+        </h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="value-card reveal reveal-delay-1">
-          <div class="value-icon">🔬</div>
+          <div class="value-icon">ðŸ”¬</div>
           <h3 class="value-title" data-i18n="story.v1.title">Science-First Formulation</h3>
-          <p class="value-desc" data-i18n="story.v1.desc">Rooted in biology and driven by research. Every ingredient is chosen with purpose, every formula is tested with care.</p>
+          <p class="value-desc" data-i18n="story.v1.desc">Rooted in biology and driven by research. Every ingredient is
+            chosen with purpose, every formula is tested with care.</p>
         </div>
         <div class="value-card reveal reveal-delay-2">
-          <div class="value-icon">🌿</div>
+          <div class="value-icon">ðŸŒ¿</div>
           <h3 class="value-title" data-i18n="story.v2.title">Saharan Heritage</h3>
-          <p class="value-desc" data-i18n="story.v2.desc">We celebrate the beauty traditions of the Sahara — the secret remedies passed down through generations of resilient women.</p>
+          <p class="value-desc" data-i18n="story.v2.desc">We celebrate the beauty traditions of the Sahara â€” the secret
+            remedies passed down through generations of resilient women.</p>
         </div>
         <div class="value-card reveal reveal-delay-3">
-          <div class="value-icon">💛</div>
+          <div class="value-icon">ðŸ’›</div>
           <h3 class="value-title" data-i18n="story.v3.title">Handmade with Heart</h3>
-          <p class="value-desc" data-i18n="story.v3.desc">Every product is crafted by hand in Béchar — small batches, maximum care, and a personal touch in every jar.</p>
+          <p class="value-desc" data-i18n="story.v3.desc">Every product is crafted by hand in BÃ©char â€” small batches,
+            maximum care, and a personal touch in every jar.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PRODUCT SHOWCASE SPLIT — "Today" -->
+  <!-- PRODUCT SHOWCASE SPLIT â€” "Today" -->
   <section class="split-section hairline-top">
     <div class="split-image">
-      <!-- 📷 Image: Current products / brand today -->
+      <!-- ðŸ“· Image: Current products / brand today -->
       <img src="image/produit1.png" alt="Chlorice products today" loading="lazy">
     </div>
     <div class="split-quote">
       <p class="section-label reveal" data-i18n="story.today.label">TODAY</p>
-      <h2 class="font-heading font-playfair text-3xl md:text-4xl leading-snug mt-2 reveal" data-i18n="story.today.title">Chlorice Today</h2>
-      <p class="text-forest/55 mt-6 leading-relaxed reveal" data-i18n="story.today.body">Today, Chlorice is a growing skincare brand rooted in Béchar, Algeria. From the university lab to your vanity — every product is a love letter to this land and its people. We combine Saharan botanical wisdom with modern cosmetic science to create formulations that are pure, potent, and unapologetically Algerian.</p>
+      <h2 class="font-heading font-playfair text-3xl md:text-4xl leading-snug mt-2 reveal"
+        data-i18n="story.today.title">Chlorice Today</h2>
+      <p class="text-forest/55 mt-6 leading-relaxed reveal" data-i18n="story.today.body">Today, Chlorice is a growing
+        skincare brand rooted in BÃ©char, Algeria. From the university lab to your vanity â€” every product is a love
+        letter to this land and its people. We combine Saharan botanical wisdom with modern cosmetic science to create
+        formulations that are pure, potent, and unapologetically Algerian.</p>
       <a href="products.html" class="btn-primary mt-10 reveal" style="align-self: flex-start;">
         <span data-i18n="story.today.cta">Explore Our Products</span>
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
       </a>
     </div>
   </section>
@@ -374,9 +477,11 @@
   <!-- CLOSING TAGLINE -->
   <section class="tagline-section">
     <div class="max-w-4xl mx-auto reveal">
-      <span class="tagline-leaf">🌿</span>
-      <p class="tagline-text" data-i18n="story.tagline">"From the heart of the Sahara — with science, with soul, with love."</p>
-      <p class="text-forest/40 mt-6 text-sm tracking-widest uppercase" data-i18n="story.tagline.sub">Chlorice Skincare — Béchar, Algeria</p>
+      <span class="tagline-leaf">ðŸŒ¿</span>
+      <p class="tagline-text" data-i18n="story.tagline">"From the heart of the Sahara â€” with science, with soul, with
+        love."</p>
+      <p class="text-forest/40 mt-6 text-sm tracking-widest uppercase" data-i18n="story.tagline.sub">Chlorice Skincare â€”
+        BÃ©char, Algeria</p>
     </div>
   </section>
 
@@ -385,30 +490,56 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
         <div class="md:col-span-2">
-          <div class="flex items-center gap-3 mb-6"><img src="image/logo_transparent.png" alt="Chlorice" class="h-10 w-auto"></div>
-          <p class="text-forest/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart of the Sahara.</p>
+          <div class="flex items-center gap-3 mb-6"><img src="image/logo_transparent.png" alt="Chlorice"
+              class="h-10 w-auto"></div>
+          <p class="text-forest/50 max-w-sm leading-relaxed" data-i18n="footer.tagline">Botanical Luxury from the Heart
+            of the Sahara.</p>
         </div>
         <div>
-          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation</h4>
+          <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.nav">Navigation
+          </h4>
           <div class="flex flex-col gap-3">
-            <a href="index.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.home">Home</a>
-            <a href="products.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.collection">Collection</a>
-            <a href="story.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="nav.story">Our Story</a>
+            <a href="index.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="nav.home">Home</a>
+            <a href="products.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="nav.collection">Collection</a>
+            <a href="story.html" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="nav.story">Our Story</a>
           </div>
         </div>
         <div>
           <h4 class="text-xs font-semibold tracking-[2px] uppercase text-gold mb-6" data-i18n="footer.legal">Legal</h4>
           <div class="flex flex-col gap-3">
-            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.privacy">Privacy Policy</a>
-            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline" data-i18n="footer.terms">Terms of Service</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" class="text-forest/50 hover:text-forest transition-all text-sm no-underline"
+              data-i18n="footer.terms">Terms of Service</a>
           </div>
         </div>
       </div>
       <div class="border-t border-forest/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-forest/30 text-xs" data-i18n="footer.copyright">© 2026 Chlorice Skincare. Béchar, Algeria.</p>
-        <div class="flex items-center gap-6">
-          <a href="#" class="text-forest/30 hover:text-gold transition-all text-xs no-underline">Instagram</a>
-          <a href="#" class="text-forest/30 hover:text-gold transition-all text-xs no-underline">Email</a>
+        <p class="text-forest/30 text-xs" data-i18n="footer.copyright">Â© 2026 Chlorice Skincare. BÃ©char, Algeria.</p>
+
+        <a href="admin.html" class="footer-dashboard-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17" />
+          </svg>
+          <span data-i18n="nav.dashboard">Dashboard</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <a href="#" class="footer-social-link">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3V2z" />
+            </svg>
+          </a>
+          <a href="#" class="footer-social-link">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -422,4 +553,5 @@
   <script src="js/cart.js?v=2"></script>
   <script src="js/app.js?v=2"></script>
 </body>
+
 </html>

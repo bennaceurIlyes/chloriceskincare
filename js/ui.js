@@ -28,9 +28,17 @@ const Navbar = {
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileNav = document.getElementById('mobile-nav');
     if (menuBtn && mobileNav) {
-      menuBtn.addEventListener('click', () => mobileNav.classList.toggle('open'));
+      menuBtn.addEventListener('click', () => {
+        const open = mobileNav.classList.toggle('open');
+        menuBtn.classList.toggle('active', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
       mobileNav.querySelectorAll('a').forEach(a =>
-        a.addEventListener('click', () => mobileNav.classList.remove('open'))
+        a.addEventListener('click', () => {
+          mobileNav.classList.remove('open');
+          menuBtn.classList.remove('active');
+          document.body.style.overflow = '';
+        })
       );
     }
   }
@@ -111,5 +119,40 @@ const ProductDetail = {
         document.getElementById(`dtab-${tab.dataset.tab}`)?.classList.add('active');
       });
     });
+  }
+};
+
+/* Skeleton Loader Helper */
+const Skeletons = {
+  card() {
+    return `<div class="skeleton-card">
+      <div class="skeleton-img skeleton"></div>
+      <div class="skeleton-info">
+        <div class="skeleton skeleton-text short"></div>
+        <div class="skeleton skeleton-text medium"></div>
+        <div class="skeleton skeleton-text long"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    </div>`;
+  },
+  inject(gridId, count) {
+    const grid = document.getElementById(gridId);
+    if (!grid || grid.children.length > 0) return;
+    grid.innerHTML = Array(count).fill(this.card()).join('');
+  },
+  clear(gridId) {
+    const grid = document.getElementById(gridId);
+    if (grid) grid.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+  }
+};
+
+/* Badge Bump Animation */
+const BadgeBump = {
+  trigger() {
+    const badge = document.getElementById('cart-badge');
+    if (!badge) return;
+    badge.classList.remove('bump');
+    void badge.offsetWidth;
+    badge.classList.add('bump');
   }
 };

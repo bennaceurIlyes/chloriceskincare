@@ -127,6 +127,7 @@ const Cart = {
     if (item) item.qty++; else this.items.push({ id, qty: 1 });
     this.save();
     this.toast(id);
+    if (typeof BadgeBump !== 'undefined') BadgeBump.trigger();
     this.open();
   },
 
@@ -179,9 +180,12 @@ const Cart = {
     if (!list) return;
 
     if (this.items.length === 0) {
-      list.innerHTML = `<div class="text-center py-16">
-        <svg class="mx-auto mb-4 opacity-20" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
-        <p class="text-forest/40 text-sm" data-i18n="cart.empty">Your cart is empty</p>
+      list.innerHTML = `<div class="empty-state">
+        <div class="empty-state-icon">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <h3 data-i18n="cart.empty">Your cart is empty</h3>
+        <p>Browse our collection to find your perfect skincare ritual.</p>
       </div>`;
       if (footer) footer.style.display = 'none';
       if (typeof I18n !== 'undefined') I18n.apply(I18n.currentLang);

@@ -6,9 +6,13 @@
 const translations = {
   en: {
     'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.products': 'Products',
+    'nav.services': 'Services',
+    'nav.contact': 'Contact',
+    'nav.shopNow': 'Shop Now',
     'nav.collection': 'Collection',
     'nav.reviews': 'Reviews',
-    'nav.about': 'About',
     'hero.tagline': 'The Radiance of Béchar,',
     'hero.tagline2': 'Refined by Science.',
     'hero.subtitle': 'Botanical luxury crafted from Saharan botanicals. Pure, potent, and transformative.',
@@ -119,9 +123,13 @@ const translations = {
 
   fr: {
     'nav.home': 'Accueil',
+    'nav.about': '\u00C0 Propos',
+    'nav.products': 'Produits',
+    'nav.services': 'Services',
+    'nav.contact': 'Contact',
+    'nav.shopNow': 'Acheter Maintenant',
     'nav.collection': 'Collection',
     'nav.reviews': 'Avis',
-    'nav.about': '\u00C0 Propos',
     'hero.tagline': "L'\u00C9clat du Sahara,",
     'hero.tagline2': 'Raffin\u00E9 par la Science.',
     'hero.subtitle': 'Luxe botanique issu des plantes sahariennes. Pur, puissant et transformateur.',
@@ -232,9 +240,13 @@ const translations = {
 
   ar: {
     'nav.home': '\u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629',
+    'nav.about': '\u0639\u0646 \u0643\u0644\u0648\u0631\u064A\u0633',
+    'nav.products': '\u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A',
+    'nav.services': '\u062E\u062F\u0645\u0627\u062A\u0646\u0627',
+    'nav.contact': '\u0627\u062A\u0635\u0644 \u0628\u0646\u0627',
+    'nav.shopNow': '\u062A\u0633\u0648\u0642 \u0627\u0644\u0622\u0646',
     'nav.collection': '\u0627\u0644\u0645\u062C\u0645\u0648\u0639\u0629',
     'nav.reviews': '\u0627\u0644\u062A\u0642\u064A\u064A\u0645\u0627\u062A',
-    'nav.about': '\u0639\u0646\u0651\u0627',
     'hero.tagline': '\u0625\u0634\u0631\u0627\u0642\u0629 \u0628\u0634\u0627\u0631\u060C',
     'hero.tagline2': '\u0645\u0635\u0641\u0651\u0627\u0629 \u0628\u0627\u0644\u0639\u0644\u0645.',
     'hero.subtitle': '\u0641\u062E\u0627\u0645\u0629 \u0646\u0628\u0627\u062A\u064A\u0629 \u0645\u0635\u0646\u0648\u0639\u0629 \u0645\u0646 \u0646\u0628\u0627\u062A\u0627\u062A \u0627\u0644\u0635\u062D\u0631\u0627\u0621. \u0646\u0642\u064A\u0629\u060C \u0641\u0639\u0651\u0627\u0644\u0629\u060C \u0648\u0645\u062D\u0648\u0651\u0644\u0629.',
