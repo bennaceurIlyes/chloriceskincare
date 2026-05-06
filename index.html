@@ -100,52 +100,61 @@
   <section id="hero" class="hero-editorial pt-12 pb-10 lg:pt-16 lg:pb-16">
     <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative">
 
-      <div class="editorial-container">
-        <!-- Left Image (Women) -->
-        <div class="hidden lg:block editorial-img-left reveal">
-          <div class="editorial-img-wrapper">
-            <img src="image/hero_women.png" alt="Chlorice Natural Care">
-          </div>
-        </div>
-
-        <!-- Center Content -->
-        <div class="editorial-content">
-          <div class="floating-badge reveal" data-i18n="hero.preheadline">Chlorice Skincare — Béchar</div>
-
-          <h1 class="reveal">
-            <span class="block" data-i18n="hero.title_bio">Science Bio</span>
-            <span class="italic-serif" data-i18n="hero.title_designed">Designed For Your Distinction</span>
-          </h1>
-
-          <p class="text-lg md:text-xl text-forest/70 leading-relaxed mb-6 mx-auto reveal" data-i18n="hero.desc_unisex">
-            Because every skin is a unique story; we provide nature's beauty through precise scientific measures.
-          </p>
-
-          <div class="reveal">
-            <a href="products.html" class="btn-primary">
-              <span data-i18n="hero.cta_new">Discover our Innovations</span>
-              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                class="ml-2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Mobile Image Spread -->
-          <div class="flex lg:hidden gap-4 justify-center mt-16 reveal">
-            <div class="w-1/2 max-w-[180px]">
-              <img src="image/hero_women.png" alt="Women" class="w-full h-auto object-cover rounded-2xl shadow-lg">
-            </div>
-            <div class="w-1/2 max-w-[180px] mt-8">
-              <img src="image/hero_men.png" alt="Men" class="w-full h-auto object-cover rounded-2xl shadow-lg">
+      <div class="editorial-grid">
+        <!-- Left Gallery Card -->
+        <div class="gallery-card card-left reveal reveal-left reveal-delay-2">
+          <div class="gallery-img-wrapper">
+            <img src="image/hero_women.png" alt="Chlorice Botanical Care" class="gallery-img">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Botanical</span>
             </div>
           </div>
         </div>
 
-        <!-- Right Image (Men) -->
-        <div class="hidden lg:block editorial-img-right reveal">
-          <div class="editorial-img-wrapper">
-            <img src="image/hero_men.png" alt="Chlorice Inclusivity">
+        <!-- Center Glass Content -->
+        <div class="hero-glass-block reveal reveal-up reveal-delay-1">
+          <div class="glass-content-inner">
+            <div class="floating-badge mb-6" data-i18n="hero.preheadline">Chlorice Skincare — Béchar</div>
+            
+            <h1 class="main-title">
+              <span class="title-top" data-i18n="hero.title_bio">Science Bio</span>
+              <span class="title-bottom italic-serif" data-i18n="hero.title_designed">Designed For Your Distinction</span>
+            </h1>
+
+            <p class="hero-description" data-i18n="hero.desc_unisex">
+              Because every skin is a unique story; we provide nature's beauty through precise scientific measures.
+            </p>
+
+            <div class="mt-8">
+              <a href="products.html" class="btn-primary btn-lg group">
+                <span data-i18n="hero.cta_new">Discover our Innovations</span>
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" class="ml-2 group-hover:translate-x-1 transition-transform">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Gallery Card -->
+        <div class="gallery-card card-right reveal reveal-right reveal-delay-3">
+          <div class="gallery-img-wrapper">
+            <img src="image/hero_men.png" alt="Chlorice Modern Inclusivity" class="gallery-img">
+            <div class="gallery-overlay">
+              <span class="gallery-tag">Modern</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Gallery (Stack) -->
+      <div class="mobile-hero-gallery lg:hidden reveal reveal-up">
+        <div class="flex gap-4 overflow-x-auto pb-4 px-2 snap-x">
+          <div class="min-w-[280px] snap-center">
+            <img src="image/hero_women.png" alt="Women" class="w-full h-[400px] object-cover rounded-2xl shadow-xl">
+          </div>
+          <div class="min-w-[280px] snap-center">
+            <img src="image/hero_men.png" alt="Men" class="w-full h-[400px] object-cover rounded-2xl shadow-xl">
           </div>
         </div>
       </div>

@@ -100,6 +100,51 @@ async function updateOrderStatus(orderId, newStatus) {
   return true;
 }
 
+/* ── Helper: Update product details (admin) ── */
+async function updateProduct(productId, updates) {
+  const { error } = await supabaseClient
+    .from('products')
+    .update(updates)
+    .eq('id', productId);
+  if (error) { console.error('Supabase updateProduct error:', error); return false; }
+  return true;
+}
+
+/* ── Helper: Create a new product (admin) ── */
+async function createProduct(productData) {
+  // Ensure productData contains name, price, description, ingredients, usage, image, promotion
+  const { data, error } = await supabaseClient
+    .from('products')
+    .insert([productData])
+    .select()
+    .single();
+  if (error) { console.error('Supabase createProduct error:', error); return null; }
+  return data;
+}
+
+/* ── Helper: Upload Product Image to Storage ── */
+async function uploadProductImage(file) {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+  const filePath = `product-images/${fileName}`;
+
+  const { data, error } = await supabaseClient.storage
+    .from('products')
+    .upload(filePath, file);
+
+  if (error) {
+    console.error('Supabase storage upload error:', error);
+    return null;
+  }
+
+  // Get public URL
+  const { data: { publicUrl } } = supabaseClient.storage
+    .from('products')
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
+
 /* ── Helper: Fetch dashboard stats (admin) ── */
 async function fetchDashboardStats() {
   const [productsRes, ordersRes, orderItemsRes] = await Promise.all([

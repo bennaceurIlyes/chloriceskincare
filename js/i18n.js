@@ -31,6 +31,22 @@ const I18n = {
   },
 
   init() {
+    // Load overrides from localStorage (saved by admin)
+    const overrides = localStorage.getItem('chlorice-translations');
+    if (overrides) {
+      try {
+        const parsed = JSON.parse(overrides);
+        for (const lang in parsed) {
+          if (translations[lang]) {
+            translations[lang] = { ...translations[lang], ...parsed[lang] };
+          }
+        }
+        console.log('✅ Translation overrides loaded from localStorage');
+      } catch (e) {
+        console.warn('Failed to parse translation overrides:', e);
+      }
+    }
+
     const saved = localStorage.getItem('chlorice-lang');
 
     if (saved && this.supportedLangs.includes(saved)) {
